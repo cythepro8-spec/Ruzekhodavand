@@ -2,7 +2,7 @@
 
 **Three Angels' Message — Revelation 14**
 
-Public multilingual website (Persian default + English + Russian) for Bible-related photos, videos, texts and files.
+Public bilingual (Persian default + English) website for Bible-related photos, videos, texts and files.
 
 - Only admin can post (password protected)
 - Visitors can view, download and comment
@@ -11,7 +11,6 @@ Public multilingual website (Persian default + English + Russian) for Bible-rela
 - Date & time for posts
 - Go Live feature
 - Mobile friendly
-- Language switch: Persian → English → Russian
 
 ## Deploy to Netlify
 1. Connect this repository to Netlify
