@@ -6,8 +6,7 @@ const LANG_KEY = 'cog_lang';
 
 const BIBLE_BOOKS = {
   fa: ['پیدایش','خروج','لاویان','اعداد','تثنیه','یوشع','داوران','روت','اول سموئیل','دوم سموئیل','اول پادشاهان','دوم پادشاهان','اول تواریخ','دوم تواریخ','عزرا','نحمیا','استر','ایوب','مزامیر','امثال','جامعه','غزل غزل‌ها','اشعیا','ارمیا','مراثی','حزقیال','دانیال','هوشع','یوئیل','عاموس','عوبیدیا','یونس','میکا','ناحوم','حبقوق','صفنیا','حجی','زکریا','ملاکی','متی','مرقس','لوقا','یوحنا','اعمال رسولان','رومیان','اول قرنتیان','دوم قرنتیان','غلاطیان','افسسیان','فیلیپیان','کولسیان','اول تسالونیکیان','دوم تسالونیکیان','اول تیموتائوس','دوم تیموتائوس','تیطس','فلیمون','عبرانیان','یعقوب','اول پطرس','دوم پطرس','اول یوحنا','دوم یوحنا','سوم یوحنا','یهودا','مکاشفه','سه فرشته','عمومی'],
-  en: ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation','Three Angels','General'],
-  ru: ['Бытие','Исход','Левит','Числа','Второзаконие','Иисус Навин','Судьи','Руфь','1 Царств','2 Царств','3 Царств','4 Царств','1 Паралипоменон','2 Паралипоменон','Ездра','Неемия','Есфирь','Иов','Псалтирь','Притчи','Екклесиаст','Песнь Песней','Исаия','Иеремия','Плач Иеремии','Иезекииль','Даниил','Осия','Иоиль','Амос','Авдий','Иона','Михей','Наум','Аввакум','Софония','Аггей','Захария','Малахия','Матфей','Марк','Лука','Иоанн','Деяния','Римлянам','1 Коринфянам','2 Коринфянам','Галатам','Ефесянам','Филиппийцам','Колоссянам','1 Фессалоникийцам','2 Фессалоникийцам','1 Тимофею','2 Тимофею','Титу','Филимону','Евреям','Иакова','1 Петра','2 Петра','1 Иоанна','2 Иоанна','3 Иоанна','Иуда','Откровение','Три Ангела','Общее']
+  en: ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation','Three Angels','General']
 };
 
 const T = {
@@ -27,7 +26,7 @@ const T = {
   },
   en: {
     pageTitle: 'Church of God — Three Angels Message', siteName: 'Church of God', tagline: 'Three Angels Message — Revelation 14',
-    home: 'Home', media: 'Media', live: 'Live', contact: 'Contact', admin: 'Admin', langBtn: 'Русский',
+    home: 'Home', media: 'Media', live: 'Live', contact: 'Contact', admin: 'Admin', langBtn: 'Persian',
     heroTitle: 'Church of God', heroSub: 'The everlasting gospel to every nation, tribe, language and people',
     angel1: 'First Angel', angel1Text: 'Fear God and give Him glory, for the hour of His judgment has come',
     angel2: 'Second Angel', angel2Text: 'Babylon is fallen, is fallen!',
@@ -38,24 +37,11 @@ const T = {
     liveNow: 'LIVE NOW', liveBadge: 'LIVE', contactTitle: 'Contact Us',
     whatsapp: 'WhatsApp', phone: 'Phone', email: 'Email',
     footer: 'Church of God — Three Angels Message of Revelation 14', close: 'Close', untitled: 'Untitled'
-  },
-  ru: {
-    pageTitle: 'Церковь Божья — Послание трёх ангелов', siteName: 'Церковь Божья', tagline: 'Послание трёх ангелов — Откровение 14',
-    home: 'Главная', media: 'Медиа', live: 'Прямой эфир', contact: 'Контакты', admin: 'Админ', langBtn: 'فارسی',
-    heroTitle: 'Церковь Божья', heroSub: 'Вечное Евангелие для всякого народа, племени, языка и народа',
-    angel1: 'Первый ангел', angel1Text: 'Убойтесь Бога и воздайте Ему славу, ибо наступил час суда Его',
-    angel2: 'Второй ангел', angel2Text: 'Пал, пал Вавилон, город великий!',
-    angel3: 'Третий ангел', angel3Text: 'Кто поклоняется зверю и образу его...',
-    all: 'Все', photo: 'Фото', video: 'Видео', file: 'Файл', text: 'Текст', search: 'Поиск...',
-    download: 'Скачать', view: 'Смотреть', comments: 'Комментарии', noPosts: 'Пока нет опубликованных материалов.',
-    writeComment: 'Напишите ваш комментарий...', yourName: 'Ваше имя', send: 'Отправить',
-    liveNow: 'В ПРЯМОМ ЭФИРЕ', liveBadge: 'ЭФИР', contactTitle: 'Связаться с нами',
-    whatsapp: 'WhatsApp', phone: 'Телефон', email: 'Эл. почта',
-    footer: 'Церковь Божья — Послание трёх ангелов Откровение 14', close: 'Закрыть', untitled: 'Без названия'
   }
 };
 
 let currentLang = localStorage.getItem(LANG_KEY) || 'fa';
+if (currentLang === 'ru') currentLang = 'en';
 let posts = [];
 let liveData = { isLive: false, streamUrl: '', title: '' };
 
@@ -75,7 +61,7 @@ function savePosts() { localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
 function saveLive() { localStorage.setItem(LIVE_KEY, JSON.stringify(liveData)); }
 
 function applyLanguage() {
-  document.body.classList.toggle('lang-en', currentLang === 'en' || currentLang === 'ru');
+  document.body.classList.toggle('lang-en', currentLang === 'en');
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
   const t = T[currentLang] || T.en;
@@ -91,49 +77,17 @@ function applyLanguage() {
   const bookSelect = document.getElementById('filter-book');
   if (bookSelect) {
     const currentVal = bookSelect.value;
-    const books = BIBLE_BOOKS[currentLang] || BIBLE_BOOKS.en;
-    bookSelect.innerHTML = `<option value="">${t.all}</option>` + books.map(b => `<option value="${b}">${b}</option>`).join('');
+    bookSelect.innerHTML = `<option value="">${t.all}</option>` + BIBLE_BOOKS[currentLang].map(b => `<option value="${b}">${b}</option>`).join('');
     bookSelect.value = currentVal;
   }
   updateLiveBadge();
 }
 
 function toggleLanguage() {
-  // Cycle: fa → en → ru → fa
-  if (currentLang === 'fa') currentLang = 'en';
-  else if (currentLang === 'en') currentLang = 'ru';
-  else currentLang = 'fa';
+  currentLang = currentLang === 'fa' ? 'en' : 'fa';
   localStorage.setItem(LANG_KEY, currentLang);
   applyLanguage();
   renderMedia();
-}
-
-function getPostTitle(p, t) {
-  if (currentLang === 'fa') return p.title_fa || p.title_en || t.untitled;
-  if (currentLang === 'ru') return p.title_en || p.title_fa || t.untitled;
-  return p.title_en || p.title_fa || t.untitled;
-}
-
-function getPostDesc(p) {
-  if (currentLang === 'fa') return p.desc_fa || p.desc_en || '';
-  return p.desc_en || p.desc_fa || '';
-}
-
-function getPostBook(p) {
-  if (currentLang === 'fa') return p.book_fa || p.book_en || '';
-  if (currentLang === 'ru') {
-    // Try to map English book name to Russian
-    const idx = BIBLE_BOOKS.en.indexOf(p.book_en);
-    if (idx >= 0) return BIBLE_BOOKS.ru[idx];
-    return p.book_en || p.book_fa || '';
-  }
-  return p.book_en || p.book_fa || '';
-}
-
-function getLocale() {
-  if (currentLang === 'fa') return 'fa-IR';
-  if (currentLang === 'ru') return 'ru-RU';
-  return 'en-GB';
 }
 
 function renderAll() {
@@ -178,17 +132,12 @@ function renderMedia() {
   const typeFilter = document.getElementById('filter-type')?.value || '';
   const search = (document.getElementById('filter-search')?.value || '').toLowerCase();
   let filtered = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-  if (bookFilter) {
-    filtered = filtered.filter(p => {
-      const b = getPostBook(p);
-      return b === bookFilter || p.book_fa === bookFilter || p.book_en === bookFilter;
-    });
-  }
+  if (bookFilter) filtered = filtered.filter(p => p.book_fa === bookFilter || p.book_en === bookFilter);
   if (typeFilter) filtered = filtered.filter(p => p.type === typeFilter);
   if (search) {
     filtered = filtered.filter(p => {
-      const title = getPostTitle(p, T[currentLang]);
-      const desc = getPostDesc(p);
+      const title = (currentLang === 'fa' ? p.title_fa : p.title_en) || '';
+      const desc = (currentLang === 'fa' ? p.desc_fa : p.desc_en) || '';
       const writing = p.writing || '';
       return title.toLowerCase().includes(search) || desc.toLowerCase().includes(search) || writing.toLowerCase().includes(search);
     });
@@ -199,10 +148,10 @@ function renderMedia() {
     return;
   }
   grid.innerHTML = filtered.map(p => {
-    const title = getPostTitle(p, t);
-    const desc = getPostDesc(p);
-    const book = getPostBook(p);
-    const date = new Date(p.date).toLocaleString(getLocale(), { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const title = currentLang === 'fa' ? (p.title_fa || p.title_en || t.untitled) : (p.title_en || p.title_fa || t.untitled);
+    const desc = currentLang === 'fa' ? (p.desc_fa || p.desc_en) : (p.desc_en || p.desc_fa);
+    const book = currentLang === 'fa' ? p.book_fa : p.book_en;
+    const date = new Date(p.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     const typeIcon = p.type === 'photo' ? '🖼️' : p.type === 'video' ? '🎬' : p.type === 'text' ? '📝' : '📄';
     const commentsCount = (p.comments || []).length;
     let preview = desc || '';
@@ -231,10 +180,10 @@ function openPost(id) {
   const post = posts.find(p => p.id === id);
   if (!post) return;
   const t = T[currentLang];
-  const title = getPostTitle(post, t);
-  const desc = getPostDesc(post);
-  const book = getPostBook(post);
-  const dateStr = new Date(post.date).toLocaleString(getLocale(), { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const title = currentLang === 'fa' ? (post.title_fa || post.title_en || t.untitled) : (post.title_en || post.title_fa || t.untitled);
+  const desc = currentLang === 'fa' ? (post.desc_fa || post.desc_en) : (post.desc_en || post.desc_fa);
+  const book = currentLang === 'fa' ? post.book_fa : post.book_en;
+  const dateStr = new Date(post.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   const modal = document.getElementById('post-modal');
   const content = document.getElementById('modal-content');
   let mediaHtml = '';
@@ -243,7 +192,7 @@ function openPost(id) {
   else if (post.dataUrl) mediaHtml = `<p style="margin:1rem 0"><a class="btn btn-primary" href="${post.dataUrl}" download="${post.filename || 'file'}">${t.download} ${escapeHtml(post.filename || '')}</a></p>`;
   let writingHtml = '';
   if (post.writing) writingHtml = `<div style="margin:1.2rem 0;padding:1.2rem;background:#f9f7f2;border-radius:10px;line-height:1.9;white-space:pre-wrap;font-size:1.05rem">${escapeHtml(post.writing)}</div>`;
-  const commentsHtml = (post.comments || []).map(c => `<div class="comment"><div><span class="comment-author">${escapeHtml(c.name)}</span> <span class="comment-date">${new Date(c.date).toLocaleString(getLocale())}</span></div><div>${escapeHtml(c.text)}</div></div>`).join('') || '';
+  const commentsHtml = (post.comments || []).map(c => `<div class="comment"><div><span class="comment-author">${escapeHtml(c.name)}</span> <span class="comment-date">${new Date(c.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB')}</span></div><div>${escapeHtml(c.text)}</div></div>`).join('') || '';
   content.innerHTML = `<button class="modal-close" onclick="closeModal()">&times;</button>
     <div class="media-book">${book || ''}</div>
     <h2 style="margin:0.5rem 0 0.4rem;color:var(--primary)">${escapeHtml(title)}</h2>
