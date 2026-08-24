@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت — کلیسای خدا</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">✝</span>
+        <span data-i18n="siteName">کلیسای خدا</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html" data-i18n="back">← بازگشت</a>
+        <button id="lang-toggle" class="lang-toggle" data-i18n="langBtn">English</button>
+        <button id="logout-btn" class="btn btn-outline" style="color:white;border-color:rgba(255,255,255,0.4)" data-i18n="logout">خروج</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="login-box" class="admin-login">
+      <h2 style="margin-bottom:0.5rem;color:var(--primary)" data-i18n="loginTitle">ورود مدیر</h2>
+      <form id="login-form">
+        <input type="password" id="password" data-i18n-placeholder="passwordPlaceholder" placeholder="رمز عبور" required autocomplete="current-password">
+        <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="loginBtn">ورود</button>
+      </form>
+      <div id="status-msg" class="status-msg hidden" style="margin-top:1rem"></div>
+    </div>
+
+    <div id="admin-panel" class="admin-panel hidden">
+      <h1 style="margin-bottom:1.5rem;color:var(--primary)" data-i18n="panelTitle">پنل مدیریت</h1>
+      <div id="status-msg" class="status-msg hidden"></div>
+
+      <div class="admin-tabs">
+        <button class="active" data-tab="tab-upload" data-i18n="tabUpload">آپلود / متن</button>
+        <button data-tab="tab-live" data-i18n="tabLive">پخش زنده</button>
+        <button data-tab="tab-manage" data-i18n="tabManage">مدیریت پست‌ها</button>
+        <button data-tab="tab-backup" data-i18n="tabBackup">پشتیبان</button>
+      </div>
+
+      <div id="tab-upload" class="admin-tab-content">
+        <form id="post-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="titleFa">عنوان فارسی (اختیاری)</label>
+              <input type="text" name="title_fa" data-i18n-placeholder="titleFaPh" placeholder="عنوان به فارسی">
+            </div>
+            <div class="form-group">
+              <label data-i18n="titleEn">عنوان انگلیسی (اختیاری)</label>
+              <input type="text" name="title_en" data-i18n-placeholder="titleEnPh" placeholder="Title in English">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="descFa">توضیحات فارسی (اختیاری)</label>
+              <textarea name="desc_fa" data-i18n-placeholder="descFaPh" placeholder="توضیحات کوتاه..."></textarea>
+            </div>
+            <div class="form-group">
+              <label data-i18n="descEn">توضیحات انگلیسی (اختیاری)</label>
+              <textarea name="desc_en" data-i18n-placeholder="descEnPh" placeholder="Short description..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="writingLabel">متن یا نوشته (می‌توانید اینجا پیست کنید)</label>
+            <textarea name="writing" id="writing-area" rows="10" data-i18n-placeholder="writingPh" placeholder="متن کامل، موعظه، مطالعه کتاب مقدس یا هر نوشته‌ای را اینجا وارد یا پیست کنید..." style="min-height:180px;font-size:1rem;line-height:1.7;"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="bibleBook">کتاب مقدس</label>
+              <select name="book" id="post-book" required></select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="typeLabel">نوع</label>
+              <select name="type" id="post-type" required>
+                <option value="text" data-i18n="typeText">متن / نوشته</option>
+                <option value="photo" data-i18n="typePhoto">عکس</option>
+                <option value="video" data-i18n="typeVideo">ویدیو</option>
+                <option value="file" data-i18n="typeFile">فایل</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="postDate">تاریخ</label>
+              <input type="date" name="postDate" id="post-date">
+            </div>
+            <div class="form-group">
+              <label data-i18n="postTime">ساعت</label>
+              <input type="time" name="postTime" id="post-time">
+            </div>
+          </div>
+
+          <div class="form-group" id="file-group">
+            <label data-i18n="fileLabel">فایل (اختیاری برای متن)</label>
+            <div class="upload-zone" id="upload-zone">
+              <input type="file" id="file-input" accept="image/*,video/*,.pdf,.doc,.docx,.mp3,.mp4,.mov,.avi,.zip,.txt">
+              <p id="file-label" data-i18n="dropFile">فایل را اینجا رها کنید یا کلیک کنید</p>
+              <p style="font-size:0.8rem;color:#888;margin-top:0.5rem" data-i18n="fileNote">عکس، ویدیو، PDF و ... (ترجیحاً کمتر از 4 مگابایت)</p>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-accent" style="width:100%;padding:0.8rem;font-size:1rem" data-i18n="publish">انتشار</button>
+        </form>
+      </div>
+
+      <div id="tab-live" class="admin-tab-content hidden">
+        <div class="live-controls">
+          <p style="margin-bottom:0.8rem"><strong data-i18n="currentStatus">وضعیت فعلی:</strong> <span id="live-status">خاموش</span></p>
+          <button id="stop-live-btn" class="btn btn-outline hidden" style="color:#c62828;border-color:#c62828" data-i18n="stopLive">توقف پخش زنده</button>
+        </div>
+        <form id="live-form">
+          <div class="form-group">
+            <label data-i18n="liveTitleLabel">عنوان پخش زنده</label>
+            <input type="text" name="liveTitle" data-i18n-placeholder="liveTitlePh" placeholder="مثلاً: موعظه یکشنبه">
+          </div>
+          <div class="form-group">
+            <label data-i18n="streamUrlLabel">لینک پخش (یوتیوب و غیره)</label>
+            <input type="url" name="streamUrl" placeholder="https://www.youtube.com/watch?v=..." required>
+            <p style="font-size:0.8rem;color:#888;margin-top:0.3rem" data-i18n="streamNote">لینک یوتیوب لایو یا هر امبدی که پشتیبانی شود</p>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;padding:0.8rem" data-i18n="goLive">شروع پخش زنده</button>
+        </form>
+      </div>
+
+      <div id="tab-manage" class="admin-tab-content hidden">
+        <h3 style="margin-bottom:1rem" data-i18n="existingPosts">پست‌های موجود</h3>
+        <p style="font-size:0.9rem;color:#666;margin-bottom:1rem" data-i18n="manageNote">برای حذف هر پست روی دکمه حذف کلیک کنید.</p>
+        <div id="posts-list"></div>
+      </div>
+
+      <div id="tab-backup" class="admin-tab-content hidden">
+        <p style="margin-bottom:1rem;color:var(--text-muted)" data-i18n="backupNote">داده‌ها در مرورگر شما ذخیره می‌شوند. برای پشتیبان‌گیری یا انتقال به دستگاه دیگر از این بخش استفاده کنید.</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+          <button id="export-btn" class="btn btn-primary" data-i18n="exportBtn">دانلود پشتیبان</button>
+          <button id="import-btn" class="btn btn-outline" data-i18n="importBtn">وارد کردن پشتیبان</button>
+          <input type="file" id="import-file" accept=".json" class="hidden">
+        </div>
+        <p style="margin-top:1.5rem;font-size:0.85rem;color:#888" data-i18n="importantNote">نکته مهم: برای فایل‌های بزرگ (ویدیوهای طولانی) توصیه می‌شود فایل را در گوگل درایو یا یوتیوب آپلود کنید و فقط لینک آن را در عنوان یا توضیحات قرار دهید.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
