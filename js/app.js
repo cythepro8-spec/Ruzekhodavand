@@ -88,7 +88,6 @@ function saveLive() { localStorage.setItem(LIVE_KEY, JSON.stringify(liveData)); 
 
 /* ========== FIREBASE AUTH ========== */
 function setupAuth() {
-  // Check if we are returning from a redirect sign-in
   auth.getRedirectResult().then(result => {
     if (result.user) {
       // Successfully signed in via redirect
@@ -97,21 +96,20 @@ function setupAuth() {
     console.log('Redirect result error:', err.message);
   });
 
-  // Listen for auth state changes
   auth.onAuthStateChanged(user => {
     currentUser = user;
     updateAuthUI();
   });
 
-  // Google Sign-In (using redirect - works better on mobile)
+  // Google Sign-In (redirect - better on mobile)
   document.getElementById('btn-google')?.addEventListener('click', () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithRedirect(provider);
   });
 
-  // Email modal
+  // Email modal - FIXED to use .open class
   document.getElementById('btn-email')?.addEventListener('click', () => {
-    document.getElementById('email-modal').style.display = 'flex';
+    document.getElementById('email-modal').classList.add('open');
   });
 
   document.getElementById('btn-email-login')?.addEventListener('click', emailLogin);
@@ -145,14 +143,21 @@ function updateAuthUI() {
 }
 
 function closeEmailModal() {
-  document.getElementById('email-modal').style.display = 'none';
-  document.getElementById('email-error').style.display = 'none';
+  document.getElementById('email-modal').classList.remove('open');
+  const errEl = document.getElementById('email-error');
+  if (errEl) errEl.style.display = 'none';
 }
 
 function emailLogin() {
   const email = document.getElementById('email-input').value.trim();
   const password = document.getElementById('email-password').value;
   const errEl = document.getElementById('email-error');
+
+  if (!email || !password) {
+    errEl.style.display = 'block';
+    errEl.textContent = currentLang === 'fa' ? 'لطفاً ایمیل و رمز عبور را وارد کنید' : 'Please enter email and password';
+    return;
+  }
 
   auth.signInWithEmailAndPassword(email, password)
     .then(() => closeEmailModal())
@@ -167,6 +172,18 @@ function emailRegister() {
   const password = document.getElementById('email-password').value;
   const errEl = document.getElementById('email-error');
 
+  if (!email || !password) {
+    errEl.style.display = 'block';
+    errEl.textContent = currentLang === 'fa' ? 'لطفاً ایمیل و رمز عبور را وارد کنید' : 'Please enter email and password';
+    return;
+  }
+
+  if (password.length < 6) {
+    errEl.style.display = 'block';
+    errEl.textContent = currentLang === 'fa' ? 'رمز عبور باید حداقل ۶ کاراکتر باشد' : 'Password must be at least 6 characters';
+    return;
+  }
+
   auth.createUserWithEmailAndPassword(email, password)
     .then(() => closeEmailModal())
     .catch(err => {
@@ -175,7 +192,7 @@ function emailRegister() {
     });
 }
 
-/* ========== VIDEO PROGRESS (tied to Firebase UID) ========== */
+/* ========== VIDEO PROGRESS ========== */
 function getProgress(postId) {
   if (!currentUser) return 0;
   try {
@@ -193,7 +210,6 @@ function saveProgress(postId, time) {
   } catch {}
 }
 
-/* ========== VISITOR COUNTER (silent) ========== */
 function loadVisitorCount() {
   fetch('https://api.countapi.xyz/hit/ruzekhodavand-site/visits').catch(() => {});
 }
