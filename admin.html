@@ -29,6 +29,10 @@
       <h2 style="margin-bottom:0.5rem;color:var(--primary)" data-i18n="loginTitle">ورود مدیر</h2>
       <form id="login-form">
         <input type="password" id="password" data-i18n-placeholder="passwordPlaceholder" placeholder="رمز عبور" required autocomplete="current-password">
+        <label style="display:flex;align-items:center;gap:0.5rem;margin:0.6rem 0 1rem;font-size:0.9rem;cursor:pointer;user-select:none;">
+          <input type="checkbox" id="show-password" style="width:auto;margin:0;">
+          <span data-i18n="showPassword">نمایش رمز عبور</span>
+        </label>
         <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="loginBtn">ورود</button>
       </form>
       <div id="status-msg" class="status-msg hidden" style="margin-top:1rem"></div>
@@ -101,7 +105,6 @@
             </div>
           </div>
 
-          <!-- EXTERNAL LINK FOR LARGE VIDEOS (5GB+) -->
           <div class="form-group" style="background:#fff8e1;padding:1rem;border-radius:10px;border:1px solid #ffe082;">
             <label data-i18n="externalLabel" style="color:#e65100;font-weight:700;">لینک ویدیو یا فایل بزرگ (توصیه برای ویدیوهای بالای ۵۰ مگابایت تا ۵ گیگابایت+)</label>
             <input type="url" name="externalUrl" id="external-url" data-i18n-placeholder="externalPh" placeholder="https://www.youtube.com/watch?v=... یا لینک مستقیم ویدیو">
