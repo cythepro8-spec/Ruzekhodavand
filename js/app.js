@@ -67,7 +67,7 @@ let currentLang = localStorage.getItem(LANG_KEY) || 'fa';
 if (currentLang === 'ru') currentLang = 'en';
 let posts = [];
 let liveData = { isLive: false, streamUrl: '', title: '' };
-let currentUser = null; // Firebase user object
+let currentUser = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
@@ -88,18 +88,25 @@ function saveLive() { localStorage.setItem(LIVE_KEY, JSON.stringify(liveData)); 
 
 /* ========== FIREBASE AUTH ========== */
 function setupAuth() {
+  // Check if we are returning from a redirect sign-in
+  auth.getRedirectResult().then(result => {
+    if (result.user) {
+      // Successfully signed in via redirect
+    }
+  }).catch(err => {
+    console.log('Redirect result error:', err.message);
+  });
+
   // Listen for auth state changes
   auth.onAuthStateChanged(user => {
     currentUser = user;
     updateAuthUI();
   });
 
-  // Google Sign-In
+  // Google Sign-In (using redirect - works better on mobile)
   document.getElementById('btn-google')?.addEventListener('click', () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).catch(err => {
-      alert(err.message);
-    });
+    auth.signInWithRedirect(provider);
   });
 
   // Email modal
