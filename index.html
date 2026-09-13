@@ -30,6 +30,23 @@
     </div>
   </header>
 
+  <!-- USER BAR (optional sign-in for video progress) -->
+  <div id="user-bar" style="background:#f0f4f8;padding:0.5rem 1rem;border-bottom:1px solid #dde3ea;font-size:0.9rem;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;max-width:1200px;margin:0 auto;">
+      <div id="user-status">
+        <span data-i18n="guestText">مهمان</span>
+      </div>
+      <div id="user-actions" style="display:flex;gap:0.5rem;align-items:center;">
+        <input type="text" id="user-name-input" data-i18n-placeholder="yourName" placeholder="نام شما" style="padding:0.35rem 0.7rem;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;max-width:140px;">
+        <button id="user-signin-btn" class="btn btn-primary btn-sm" data-i18n="signIn">ورود</button>
+        <button id="user-signout-btn" class="btn btn-outline btn-sm hidden" data-i18n="signOut">خروج</button>
+      </div>
+      <div style="font-size:0.85rem;color:#666;">
+        <span data-i18n="visitors">بازدیدها:</span> <strong id="visitor-count">…</strong>
+      </div>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" id="home">
     <div class="hero-content">
