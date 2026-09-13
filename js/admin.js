@@ -5,6 +5,7 @@ const STORAGE_KEY = 'cog_posts_v1';
 const LIVE_KEY = 'cog_live_v1';
 const AUTH_KEY = 'cog_auth';
 const LANG_KEY = 'cog_lang';
+const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB
 
 const BIBLE_BOOKS = {
   fa: ['پیدایش','خروج','لاویان','اعداد','تثنیه','یوشع','داوران','روت','اول سموئیل','دوم سموئیل','اول پادشاهان','دوم پادشاهان','اول تواریخ','دوم تواریخ','عزرا','نحمیا','استر','ایوب','مزامیر','امثال','جامعه','غزل غزل‌ها','اشعیا','ارمیا','مراثی','حزقیال','دانیال','هوشع','یوئیل','عاموس','عوبیدیا','یونس','میکا','ناحوم','حبقوق','صفنیا','حجی','زکریا','ملاکی','متی','مرقس','لوقا','یوحنا','اعمال رسولان','رومیان','اول قرنتیان','دوم قرنتیان','غلاطیان','افسسیان','فیلیپیان','کولسیان','اول تسالونیکیان','دوم تسالونیکیان','اول تیموتائوس','دوم تیموتائوس','تیطس','فلیمون','عبرانیان','یعقوب','اول پطرس','دوم پطرس','اول یوحنا','دوم یوحنا','سوم یوحنا','یهودا','مکاشفه','سه فرشته','عمومی'],
@@ -22,11 +23,11 @@ const T = {
     descFaPh: 'توضیحات کوتاه...', descEnPh: 'Short description...',
     writingLabel: 'متن یا نوشته (می‌توانید اینجا پیست کنید)', writingPh: 'متن کامل، موعظه، مطالعه کتاب مقدس یا هر نوشته‌ای را اینجا وارد یا پیست کنید...',
     bibleBook: 'کتاب مقدس', typeLabel: 'نوع', typeText: 'متن / نوشته', typePhoto: 'عکس', typeVideo: 'ویدیو', typeFile: 'فایل',
-    fileLabel: 'فایل کوچک (اختیاری – فقط برای فایل‌های کوچک‌تر از 4 مگابایت)', dropFile: 'فایل را اینجا رها کنید یا کلیک کنید',
-    fileNote: 'فقط فایل‌های کوچک (عکس، PDF، ویدیوهای کوتاه). برای ویدیوهای بزرگ از لینک بالا استفاده کنید.',
-    externalLabel: 'لینک ویدیو یا فایل بزرگ (توصیه برای ویدیوهای بالای 50 مگابایت و تا 5 گیگابایت+)',
+    fileLabel: 'فایل مستقیم (حداکثر ۱۲ مگابایت)', dropFile: 'فایل را اینجا رها کنید یا کلیک کنید',
+    fileNote: 'حداکثر ۱۲ مگابایت. برای ویدیوهای بزرگ‌تر حتماً از لینک خارجی استفاده کنید.',
+    externalLabel: 'لینک ویدیو یا فایل بزرگ (توصیه برای ویدیوهای بالای ۵۰ مگابایت تا ۵ گیگابایت+)',
     externalPh: 'https://www.youtube.com/watch?v=... یا لینک مستقیم ویدیو',
-    externalNote: 'برای ویدیوهای بزرگ: اول ویدیو را در یوتیوب، گوگل درایو یا ویمو آپلود کنید، بعد لینک را اینجا بگذارید. این بهترین روش برای ویدیوهای 5 گیگابایتی است.',
+    externalNote: 'برای ویدیوهای بزرگ: اول ویدیو را در یوتیوب، گوگل درایو یا ویمو آپلود کنید، بعد لینک را اینجا بگذارید. این بهترین روش برای ویدیوهای ۵ گیگابایتی است.',
     postDate: 'تاریخ', postTime: 'ساعت', publish: 'انتشار',
     currentStatus: 'وضعیت فعلی:', stopLive: 'توقف پخش زنده', liveTitleLabel: 'عنوان پخش زنده',
     liveTitlePh: 'مثلاً: موعظه یکشنبه', streamUrlLabel: 'لینک پخش (یوتیوب و غیره)',
@@ -34,9 +35,10 @@ const T = {
     existingPosts: 'پست‌های موجود', manageNote: 'برای حذف هر پست روی دکمه حذف کلیک کنید.',
     backupNote: 'داده‌ها در مرورگر شما ذخیره می‌شوند. برای پشتیبان‌گیری یا انتقال به دستگاه دیگر از این بخش استفاده کنید.',
     exportBtn: 'دانلود پشتیبان', importBtn: 'وارد کردن پشتیبان',
-    importantNote: 'نکته مهم: برای ویدیوهای بزرگ (حتی 5 گیگابایت) حتماً از بخش «لینک ویدیو» استفاده کنید. اول ویدیو را در یوتیوب یا گوگل درایو آپلود کنید و لینک را وارد نمایید.',
+    importantNote: 'نکته مهم: برای ویدیوهای بزرگ (حتی ۵ گیگابایت) حتماً از بخش «لینک ویدیو» استفاده کنید.',
     offline: 'خاموش', live: 'زنده', wrongPass: 'رمز عبور اشتباه است',
-    needContent: 'لطفاً متن بنویسید، لینک بگذارید یا فایلی انتخاب کنید', fileTooBig: 'فایل بزرگ‌تر از 4 مگابایت است. از لینک خارجی استفاده کنید.',
+    needContent: 'لطفاً متن بنویسید، لینک بگذارید یا فایلی انتخاب کنید',
+    fileTooBig: 'فایل بزرگ‌تر از ۱۲ مگابایت است. لطفاً از لینک خارجی استفاده کنید.',
     published: 'منتشر شد!', storageError: 'خطا در ذخیره. از لینک خارجی استفاده کنید.',
     readError: 'خطا در خواندن فایل', liveActivated: 'پخش زنده فعال شد!', liveStopped: 'پخش زنده متوقف شد',
     noPosts: 'هنوز پستی نیست', delete: 'حذف', confirmDelete: 'آیا مطمئن هستید که می‌خواهید این پست را حذف کنید؟',
@@ -52,8 +54,8 @@ const T = {
     descFaPh: 'Short description...', descEnPh: 'Short description...',
     writingLabel: 'Text or Writing (you can paste here)', writingPh: 'Paste or type full text, sermon, Bible study or any writing here...',
     bibleBook: 'Bible Book', typeLabel: 'Type', typeText: 'Text / Writing', typePhoto: 'Photo', typeVideo: 'Video', typeFile: 'File',
-    fileLabel: 'Small file (optional – only under 4 MB)', dropFile: 'Drop file here or click',
-    fileNote: 'Only small files (photos, PDFs, short videos). For large videos use the link above.',
+    fileLabel: 'Direct file upload (max 12 MB)', dropFile: 'Drop file here or click',
+    fileNote: 'Maximum 12 MB. For larger videos always use the external link above.',
     externalLabel: 'External Video / Large File Link (recommended for videos over 50 MB up to 5 GB+)',
     externalPh: 'https://www.youtube.com/watch?v=... or direct video link',
     externalNote: 'For large videos: first upload to YouTube, Google Drive or Vimeo, then paste the link here. This is the best way for 5 GB videos.',
@@ -64,9 +66,10 @@ const T = {
     existingPosts: 'Existing Posts', manageNote: 'Click Delete to remove any post.',
     backupNote: 'Data is stored in your browser. Use this to backup or transfer to another device.',
     exportBtn: 'Export Backup', importBtn: 'Import Backup',
-    importantNote: 'Important: For large videos (even 5 GB) always use the External Video Link section. Upload to YouTube or Google Drive first, then paste the link.',
+    importantNote: 'Important: For large videos (even 5 GB) always use the External Video Link section.',
     offline: 'Offline', live: 'LIVE', wrongPass: 'Wrong password',
-    needContent: 'Please write text, paste a link, or select a file', fileTooBig: 'File larger than 4 MB. Use external link instead.',
+    needContent: 'Please write text, paste a link, or select a file',
+    fileTooBig: 'File larger than 12 MB. Please use an external link instead.',
     published: 'Published!', storageError: 'Storage error. Use external links.',
     readError: 'Error reading file', liveActivated: 'Live stream activated!', liveStopped: 'Live stopped',
     noPosts: 'No posts yet', delete: 'Delete', confirmDelete: 'Are you sure you want to delete this post?',
@@ -218,7 +221,6 @@ function handlePostSubmit(e) {
   const type = form.type.value;
   const bookIdx = parseInt(form.book.value, 10);
 
-  // Must have writing OR file OR external link
   if (!writing && !file && !externalUrl) {
     showStatus(t.needContent, 'error');
     return;
@@ -232,7 +234,7 @@ function handlePostSubmit(e) {
   const finishSave = (dataUrl, filename) => {
     let finalType = type;
     if (file) finalType = (type === 'text' ? guessType(file) : type);
-    else if (externalUrl) finalType = 'video'; // treat external as video by default
+    else if (externalUrl) finalType = 'video';
 
     const post = {
       id: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
@@ -263,7 +265,7 @@ function handlePostSubmit(e) {
   };
 
   if (file) {
-    if (file.size > 4 * 1024 * 1024) {
+    if (file.size > MAX_FILE_SIZE) {
       showStatus(t.fileTooBig, 'error');
       return;
     }
