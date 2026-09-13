@@ -22,17 +22,21 @@ const T = {
     descFaPh: 'توضیحات کوتاه...', descEnPh: 'Short description...',
     writingLabel: 'متن یا نوشته (می‌توانید اینجا پیست کنید)', writingPh: 'متن کامل، موعظه، مطالعه کتاب مقدس یا هر نوشته‌ای را اینجا وارد یا پیست کنید...',
     bibleBook: 'کتاب مقدس', typeLabel: 'نوع', typeText: 'متن / نوشته', typePhoto: 'عکس', typeVideo: 'ویدیو', typeFile: 'فایل',
-    fileLabel: 'فایل (اختیاری برای متن)', dropFile: 'فایل را اینجا رها کنید یا کلیک کنید',
-    fileNote: 'عکس، ویدیو، PDF و ... (ترجیحاً کمتر از 4 مگابایت)', postDate: 'تاریخ', postTime: 'ساعت', publish: 'انتشار',
+    fileLabel: 'فایل کوچک (اختیاری – فقط برای فایل‌های کوچک‌تر از 4 مگابایت)', dropFile: 'فایل را اینجا رها کنید یا کلیک کنید',
+    fileNote: 'فقط فایل‌های کوچک (عکس، PDF، ویدیوهای کوتاه). برای ویدیوهای بزرگ از لینک بالا استفاده کنید.',
+    externalLabel: 'لینک ویدیو یا فایل بزرگ (توصیه برای ویدیوهای بالای 50 مگابایت و تا 5 گیگابایت+)',
+    externalPh: 'https://www.youtube.com/watch?v=... یا لینک مستقیم ویدیو',
+    externalNote: 'برای ویدیوهای بزرگ: اول ویدیو را در یوتیوب، گوگل درایو یا ویمو آپلود کنید، بعد لینک را اینجا بگذارید. این بهترین روش برای ویدیوهای 5 گیگابایتی است.',
+    postDate: 'تاریخ', postTime: 'ساعت', publish: 'انتشار',
     currentStatus: 'وضعیت فعلی:', stopLive: 'توقف پخش زنده', liveTitleLabel: 'عنوان پخش زنده',
     liveTitlePh: 'مثلاً: موعظه یکشنبه', streamUrlLabel: 'لینک پخش (یوتیوب و غیره)',
     streamNote: 'لینک یوتیوب لایو یا هر امبدی که پشتیبانی شود', goLive: 'شروع پخش زنده',
     existingPosts: 'پست‌های موجود', manageNote: 'برای حذف هر پست روی دکمه حذف کلیک کنید.',
     backupNote: 'داده‌ها در مرورگر شما ذخیره می‌شوند. برای پشتیبان‌گیری یا انتقال به دستگاه دیگر از این بخش استفاده کنید.',
     exportBtn: 'دانلود پشتیبان', importBtn: 'وارد کردن پشتیبان',
-    importantNote: 'نکته مهم: برای فایل‌های بزرگ توصیه می‌شود فایل را در گوگل درایو یا یوتیوب آپلود کنید.',
+    importantNote: 'نکته مهم: برای ویدیوهای بزرگ (حتی 5 گیگابایت) حتماً از بخش «لینک ویدیو» استفاده کنید. اول ویدیو را در یوتیوب یا گوگل درایو آپلود کنید و لینک را وارد نمایید.',
     offline: 'خاموش', live: 'زنده', wrongPass: 'رمز عبور اشتباه است',
-    needContent: 'لطفاً متن بنویسید یا فایلی انتخاب کنید', fileTooBig: 'فایل بزرگ‌تر از 4 مگابایت است.',
+    needContent: 'لطفاً متن بنویسید، لینک بگذارید یا فایلی انتخاب کنید', fileTooBig: 'فایل بزرگ‌تر از 4 مگابایت است. از لینک خارجی استفاده کنید.',
     published: 'منتشر شد!', storageError: 'خطا در ذخیره. از لینک خارجی استفاده کنید.',
     readError: 'خطا در خواندن فایل', liveActivated: 'پخش زنده فعال شد!', liveStopped: 'پخش زنده متوقف شد',
     noPosts: 'هنوز پستی نیست', delete: 'حذف', confirmDelete: 'آیا مطمئن هستید که می‌خواهید این پست را حذف کنید؟',
@@ -48,17 +52,21 @@ const T = {
     descFaPh: 'Short description...', descEnPh: 'Short description...',
     writingLabel: 'Text or Writing (you can paste here)', writingPh: 'Paste or type full text, sermon, Bible study or any writing here...',
     bibleBook: 'Bible Book', typeLabel: 'Type', typeText: 'Text / Writing', typePhoto: 'Photo', typeVideo: 'Video', typeFile: 'File',
-    fileLabel: 'File (optional for text)', dropFile: 'Drop file here or click',
-    fileNote: 'Photo, video, PDF, etc. (preferably under 4 MB)', postDate: 'Date', postTime: 'Time', publish: 'Publish',
+    fileLabel: 'Small file (optional – only under 4 MB)', dropFile: 'Drop file here or click',
+    fileNote: 'Only small files (photos, PDFs, short videos). For large videos use the link above.',
+    externalLabel: 'External Video / Large File Link (recommended for videos over 50 MB up to 5 GB+)',
+    externalPh: 'https://www.youtube.com/watch?v=... or direct video link',
+    externalNote: 'For large videos: first upload to YouTube, Google Drive or Vimeo, then paste the link here. This is the best way for 5 GB videos.',
+    postDate: 'Date', postTime: 'Time', publish: 'Publish',
     currentStatus: 'Current status:', stopLive: 'Stop Live', liveTitleLabel: 'Live Title',
     liveTitlePh: 'e.g. Sunday Sermon', streamUrlLabel: 'Stream URL (YouTube etc.)',
     streamNote: 'YouTube Live link or any supported embed', goLive: 'Go Live',
     existingPosts: 'Existing Posts', manageNote: 'Click Delete to remove any post.',
     backupNote: 'Data is stored in your browser. Use this to backup or transfer to another device.',
     exportBtn: 'Export Backup', importBtn: 'Import Backup',
-    importantNote: 'Important: For large files upload to Google Drive or YouTube and paste the link.',
+    importantNote: 'Important: For large videos (even 5 GB) always use the External Video Link section. Upload to YouTube or Google Drive first, then paste the link.',
     offline: 'Offline', live: 'LIVE', wrongPass: 'Wrong password',
-    needContent: 'Please write some text or select a file', fileTooBig: 'File larger than 4 MB.',
+    needContent: 'Please write text, paste a link, or select a file', fileTooBig: 'File larger than 4 MB. Use external link instead.',
     published: 'Published!', storageError: 'Storage error. Use external links.',
     readError: 'Error reading file', liveActivated: 'Live stream activated!', liveStopped: 'Live stopped',
     noPosts: 'No posts yet', delete: 'Delete', confirmDelete: 'Are you sure you want to delete this post?',
@@ -206,21 +214,40 @@ function handlePostSubmit(e) {
   const desc_fa = form.desc_fa.value.trim();
   const desc_en = form.desc_en.value.trim();
   const writing = form.writing.value.trim();
+  const externalUrl = (form.externalUrl?.value || '').trim();
   const type = form.type.value;
   const bookIdx = parseInt(form.book.value, 10);
-  if (!writing && !file) { showStatus(t.needContent, 'error'); return; }
+
+  // Must have writing OR file OR external link
+  if (!writing && !file && !externalUrl) {
+    showStatus(t.needContent, 'error');
+    return;
+  }
+
   let postDate = new Date().toISOString();
   const dateVal = form.postDate.value;
   const timeVal = form.postTime.value || '12:00';
   if (dateVal) postDate = new Date(dateVal + 'T' + timeVal + ':00').toISOString();
+
   const finishSave = (dataUrl, filename) => {
+    let finalType = type;
+    if (file) finalType = (type === 'text' ? guessType(file) : type);
+    else if (externalUrl) finalType = 'video'; // treat external as video by default
+
     const post = {
       id: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
-      title_fa, title_en, desc_fa, desc_en, writing: writing || '',
-      book_fa: BIBLE_BOOKS.fa[bookIdx], book_en: BIBLE_BOOKS.en[bookIdx],
-      type: file ? (type === 'text' ? guessType(file) : type) : 'text',
-      filename: filename || '', dataUrl: dataUrl || '', date: postDate, comments: []
+      title_fa, title_en, desc_fa, desc_en,
+      writing: writing || '',
+      externalUrl: externalUrl || '',
+      book_fa: BIBLE_BOOKS.fa[bookIdx],
+      book_en: BIBLE_BOOKS.en[bookIdx],
+      type: finalType,
+      filename: filename || '',
+      dataUrl: dataUrl || '',
+      date: postDate,
+      comments: []
     };
+
     posts.push(post);
     try {
       savePosts();
@@ -234,8 +261,12 @@ function handlePostSubmit(e) {
       posts.pop();
     }
   };
+
   if (file) {
-    if (file.size > 4 * 1024 * 1024) showStatus(t.fileTooBig, 'error');
+    if (file.size > 4 * 1024 * 1024) {
+      showStatus(t.fileTooBig, 'error');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (ev) => finishSave(ev.target.result, file.name);
     reader.onerror = () => showStatus(t.readError, 'error');
@@ -302,8 +333,9 @@ function renderPostsList() {
     const book = currentLang === 'fa' ? p.book_fa : p.book_en;
     const dateStr = new Date(p.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     const typeLabel = p.type === 'text' ? t.typeText : p.type === 'photo' ? t.typePhoto : p.type === 'video' ? t.typeVideo : t.typeFile;
+    const extra = p.externalUrl ? ' 🔗' : '';
     return `<div style="display:flex;justify-content:space-between;align-items:center;padding:0.8rem;border-bottom:1px solid #eee;gap:1rem;flex-wrap:wrap">
-      <div style="flex:1;min-width:200px"><strong>${escapeHtml(title)}</strong>
+      <div style="flex:1;min-width:200px"><strong>${escapeHtml(title)}${extra}</strong>
         <div style="font-size:0.85rem;color:#666;margin-top:0.25rem">${escapeHtml(book || '')} · ${typeLabel} · ${dateStr}</div></div>
       <button class="btn btn-outline btn-sm" onclick="deletePost('${p.id}')" style="color:#c62828;border-color:#c62828">${t.delete}</button>
     </div>`;
