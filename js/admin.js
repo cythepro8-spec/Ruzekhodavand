@@ -16,6 +16,7 @@ const T = {
   fa: {
     siteName: 'کلیسای خدا', back: '← بازگشت', langBtn: 'English', logout: 'خروج',
     loginTitle: 'ورود مدیر', passwordPlaceholder: 'رمز عبور', loginBtn: 'ورود', panelTitle: 'پنل مدیریت',
+    showPassword: 'نمایش رمز عبور',
     tabUpload: 'آپلود / متن', tabLive: 'پخش زنده', tabManage: 'مدیریت پست‌ها', tabBackup: 'پشتیبان',
     titleFa: 'عنوان فارسی (اختیاری)', titleEn: 'عنوان انگلیسی (اختیاری)',
     titleFaPh: 'عنوان به فارسی', titleEnPh: 'Title in English',
@@ -27,7 +28,7 @@ const T = {
     fileNote: 'حداکثر ۱۲ مگابایت. برای ویدیوهای بزرگ‌تر حتماً از لینک خارجی استفاده کنید.',
     externalLabel: 'لینک ویدیو یا فایل بزرگ (توصیه برای ویدیوهای بالای ۵۰ مگابایت تا ۵ گیگابایت+)',
     externalPh: 'https://www.youtube.com/watch?v=... یا لینک مستقیم ویدیو',
-    externalNote: 'برای ویدیوهای بزرگ: اول ویدیو را در یوتیوب، گوگل درایو یا ویمو آپلود کنید، بعد لینک را اینجا بگذارید. این بهترین روش برای ویدیوهای ۵ گیگابایتی است.',
+    externalNote: 'برای ویدیوهای بزرگ: اول ویدیو را در یوتیوب، گوگل درایو یا ویمو آپلود کنید، بعد لینک را اینجا بگذارید.',
     postDate: 'تاریخ', postTime: 'ساعت', publish: 'انتشار',
     currentStatus: 'وضعیت فعلی:', stopLive: 'توقف پخش زنده', liveTitleLabel: 'عنوان پخش زنده',
     liveTitlePh: 'مثلاً: موعظه یکشنبه', streamUrlLabel: 'لینک پخش (یوتیوب و غیره)',
@@ -47,6 +48,7 @@ const T = {
   en: {
     siteName: 'Church of God', back: '← Back', langBtn: 'Persian', logout: 'Logout',
     loginTitle: 'Admin Login', passwordPlaceholder: 'Password', loginBtn: 'Login', panelTitle: 'Admin Panel',
+    showPassword: 'Show password',
     tabUpload: 'Upload / Text', tabLive: 'Go Live', tabManage: 'Manage Posts', tabBackup: 'Backup',
     titleFa: 'Persian Title (optional)', titleEn: 'English Title (optional)',
     titleFaPh: 'Title in Persian', titleEnPh: 'Title in English',
@@ -58,7 +60,7 @@ const T = {
     fileNote: 'Maximum 12 MB. For larger videos always use the external link above.',
     externalLabel: 'External Video / Large File Link (recommended for videos over 50 MB up to 5 GB+)',
     externalPh: 'https://www.youtube.com/watch?v=... or direct video link',
-    externalNote: 'For large videos: first upload to YouTube, Google Drive or Vimeo, then paste the link here. This is the best way for 5 GB videos.',
+    externalNote: 'For large videos: first upload to YouTube, Google Drive or Vimeo, then paste the link here.',
     postDate: 'Date', postTime: 'Time', publish: 'Publish',
     currentStatus: 'Current status:', stopLive: 'Stop Live', liveTitleLabel: 'Live Title',
     liveTitlePh: 'e.g. Sunday Sermon', streamUrlLabel: 'Stream URL (YouTube etc.)',
@@ -176,6 +178,13 @@ function setupAdminEvents() {
   document.getElementById('post-form')?.addEventListener('submit', handlePostSubmit);
   document.getElementById('live-form')?.addEventListener('submit', handleLiveSubmit);
   document.getElementById('stop-live-btn')?.addEventListener('click', stopLive);
+
+  // Show / hide password
+  document.getElementById('show-password')?.addEventListener('change', (e) => {
+    const input = document.getElementById('password');
+    if (input) input.type = e.target.checked ? 'text' : 'password';
+  });
+
   const zone = document.getElementById('upload-zone');
   const fileInput = document.getElementById('file-input');
   if (zone && fileInput) {
