@@ -16,7 +16,7 @@ const T = {
   fa: {
     siteName: 'کلیسای خدا', back: '← بازگشت', langBtn: 'English', logout: 'خروج',
     loginTitle: 'ورود مدیر', passwordPlaceholder: 'رمز عبور', loginBtn: 'ورود', panelTitle: 'پنل مدیریت',
-    showPassword: 'نمایش رمز عبور',
+    showPassword: 'نمایش رمز عبور', visitorsLabel: 'بازدید کل سایت',
     tabUpload: 'آپلود / متن', tabLive: 'پخش زنده', tabManage: 'مدیریت پست‌ها', tabBackup: 'پشتیبان',
     titleFa: 'عنوان فارسی (اختیاری)', titleEn: 'عنوان انگلیسی (اختیاری)',
     titleFaPh: 'عنوان به فارسی', titleEnPh: 'Title in English',
@@ -48,7 +48,7 @@ const T = {
   en: {
     siteName: 'Church of God', back: '← Back', langBtn: 'Persian', logout: 'Logout',
     loginTitle: 'Admin Login', passwordPlaceholder: 'Password', loginBtn: 'Login', panelTitle: 'Admin Panel',
-    showPassword: 'Show password',
+    showPassword: 'Show password', visitorsLabel: 'Total site visits',
     tabUpload: 'Upload / Text', tabLive: 'Go Live', tabManage: 'Manage Posts', tabBackup: 'Backup',
     titleFa: 'Persian Title (optional)', titleEn: 'English Title (optional)',
     titleFaPh: 'Title in Persian', titleEnPh: 'Title in English',
@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
   populateBookSelects();
   setupAdminEvents();
   setDefaultDateTime();
+  loadVisitorCount();
 });
 
 function setDefaultDateTime() {
@@ -108,6 +109,20 @@ function loadData() {
 
 function savePosts() { localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); }
 function saveLive() { localStorage.setItem(LIVE_KEY, JSON.stringify(liveData)); }
+
+function loadVisitorCount() {
+  const el = document.getElementById('admin-visitor-count');
+  if (!el) return;
+  fetch('https://api.countapi.xyz/get/ruzekhodavand-site/visits')
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.value != null) el.textContent = data.value.toLocaleString();
+      else el.textContent = '—';
+    })
+    .catch(() => {
+      el.textContent = '—';
+    });
+}
 
 function applyLanguage() {
   document.body.classList.toggle('lang-en', currentLang === 'en');
@@ -144,7 +159,11 @@ function checkAuth() {
   const isAuth = sessionStorage.getItem(AUTH_KEY) === 'true';
   document.getElementById('login-box').classList.toggle('hidden', isAuth);
   document.getElementById('admin-panel').classList.toggle('hidden', !isAuth);
-  if (isAuth) { renderLiveControls(); renderPostsList(); }
+  if (isAuth) {
+    renderLiveControls();
+    renderPostsList();
+    loadVisitorCount();
+  }
 }
 
 function login(e) {
@@ -179,7 +198,6 @@ function setupAdminEvents() {
   document.getElementById('live-form')?.addEventListener('submit', handleLiveSubmit);
   document.getElementById('stop-live-btn')?.addEventListener('click', stopLive);
 
-  // Show / hide password
   document.getElementById('show-password')?.addEventListener('change', (e) => {
     const input = document.getElementById('password');
     if (input) input.type = e.target.checked ? 'text' : 'password';
