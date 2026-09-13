@@ -1,10 +1,23 @@
-/* Church of God - Main App Logic */
+/* Church of God - Main App Logic + Firebase Auth */
 
 const STORAGE_KEY = 'cog_posts_v1';
 const LIVE_KEY = 'cog_live_v1';
 const LANG_KEY = 'cog_lang';
-const USER_KEY = 'cog_user';
 const PROGRESS_KEY = 'cog_progress';
+
+// ========== FIREBASE CONFIG ==========
+const firebaseConfig = {
+  apiKey: "AIzaSyBmeWRzeLOa5qVQc2CDSRvFCG2nVlF1z_0",
+  authDomain: "ruzekhodavand.firebaseapp.com",
+  projectId: "ruzekhodavand",
+  storageBucket: "ruzekhodavand.firebasestorage.app",
+  messagingSenderId: "993182198836",
+  appId: "1:993182198836:web:dcbe10a9f565b75d026e61",
+  measurementId: "G-0ZVP3ERTY9"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
 const BIBLE_BOOKS = {
   fa: ['پیدایش','خروج','لاویان','اعداد','تثنیه','یوشع','داوران','روت','اول سموئیل','دوم سموئیل','اول پادشاهان','دوم پادشاهان','اول تواریخ','دوم تواریخ','عزرا','نحمیا','استر','ایوب','مزامیر','امثال','جامعه','غزل غزل‌ها','اشعیا','ارمیا','مراثی','حزقیال','دانیال','هوشع','یوئیل','عاموس','عوبیدیا','یونس','میکا','ناحوم','حبقوق','صفنیا','حجی','زکریا','ملاکی','متی','مرقس','لوقا','یوحنا','اعمال رسولان','رومیان','اول قرنتیان','دوم قرنتیان','غلاطیان','افسسیان','فیلیپیان','کولسیان','اول تسالونیکیان','دوم تسالونیکیان','اول تیموتائوس','دوم تیموتائوس','تیطس','فلیمون','عبرانیان','یعقوب','اول پطرس','دوم پطرس','اول یوحنا','دوم یوحنا','سوم یوحنا','یهودا','مکاشفه','سه فرشته','عمومی'],
@@ -25,8 +38,10 @@ const T = {
     liveNow: 'در حال پخش زنده', liveBadge: 'زنده', contactTitle: 'تماس با ما',
     whatsapp: 'واتساپ', phone: 'تلفن', email: 'ایمیل',
     footer: 'کلیسای خدا — پیام سه فرشته مکاشفه 14', close: 'بستن', untitled: 'بدون عنوان',
-    guestText: 'مهمان', signIn: 'ورود', signOut: 'خروج', welcome: 'خوش آمدید', visitors: 'بازدیدها:',
-    resumeHint: 'ویدیو از جایی که قبلاً متوقف کردید ادامه پیدا می‌کند'
+    guestText: 'مهمان', signOut: 'خروج', welcome: 'خوش آمدید',
+    signInGoogle: 'ورود با گوگل', signInEmail: 'ورود با ایمیل',
+    emailLoginTitle: 'ورود با ایمیل', emailLabel: 'ایمیل', passwordLabel: 'رمز عبور',
+    loginBtn: 'ورود', registerBtn: 'ثبت‌نام', resumeHint: 'ویدیو از جایی که قبلاً متوقف کردید ادامه پیدا می‌کند'
   },
   en: {
     pageTitle: 'Church of God — Three Angels Message', siteName: 'Church of God', tagline: 'Three Angels Message — Revelation 14',
@@ -41,8 +56,10 @@ const T = {
     liveNow: 'LIVE NOW', liveBadge: 'LIVE', contactTitle: 'Contact Us',
     whatsapp: 'WhatsApp', phone: 'Phone', email: 'Email',
     footer: 'Church of God — Three Angels Message of Revelation 14', close: 'Close', untitled: 'Untitled',
-    guestText: 'Guest', signIn: 'Sign in', signOut: 'Sign out', welcome: 'Welcome', visitors: 'Visitors:',
-    resumeHint: 'Video will resume from where you left off'
+    guestText: 'Guest', signOut: 'Sign out', welcome: 'Welcome',
+    signInGoogle: 'Sign in with Google', signInEmail: 'Sign in with Email',
+    emailLoginTitle: 'Sign in with Email', emailLabel: 'Email', passwordLabel: 'Password',
+    loginBtn: 'Login', registerBtn: 'Register', resumeHint: 'Video will resume from where you left off'
   }
 };
 
@@ -50,14 +67,14 @@ let currentLang = localStorage.getItem(LANG_KEY) || 'fa';
 if (currentLang === 'ru') currentLang = 'en';
 let posts = [];
 let liveData = { isLive: false, streamUrl: '', title: '' };
-let currentUser = localStorage.getItem(USER_KEY) || '';
+let currentUser = null; // Firebase user object
 
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
   applyLanguage();
   renderAll();
   setupEventListeners();
-  updateUserBar();
+  setupAuth();
   loadVisitorCount();
 });
 
@@ -68,6 +85,111 @@ function loadData() {
 
 function savePosts() { localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); }
 function saveLive() { localStorage.setItem(LIVE_KEY, JSON.stringify(liveData)); }
+
+/* ========== FIREBASE AUTH ========== */
+function setupAuth() {
+  // Listen for auth state changes
+  auth.onAuthStateChanged(user => {
+    currentUser = user;
+    updateAuthUI();
+  });
+
+  // Google Sign-In
+  document.getElementById('btn-google')?.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(err => {
+      alert(err.message);
+    });
+  });
+
+  // Email modal
+  document.getElementById('btn-email')?.addEventListener('click', () => {
+    document.getElementById('email-modal').style.display = 'flex';
+  });
+
+  document.getElementById('btn-email-login')?.addEventListener('click', emailLogin);
+  document.getElementById('btn-email-register')?.addEventListener('click', emailRegister);
+  document.getElementById('btn-signout')?.addEventListener('click', () => auth.signOut());
+}
+
+function updateAuthUI() {
+  const loggedOut = document.getElementById('auth-logged-out');
+  const loggedIn = document.getElementById('auth-logged-in');
+  const display = document.getElementById('user-display');
+  const t = T[currentLang];
+
+  if (currentUser) {
+    if (loggedOut) loggedOut.style.display = 'none';
+    if (loggedIn) {
+      loggedIn.style.display = 'flex';
+      loggedIn.classList.remove('hidden');
+    }
+    if (display) {
+      const name = currentUser.displayName || currentUser.email || 'User';
+      display.innerHTML = `${t.welcome}, <strong>${escapeHtml(name)}</strong>`;
+    }
+  } else {
+    if (loggedOut) loggedOut.style.display = 'flex';
+    if (loggedIn) {
+      loggedIn.style.display = 'none';
+      loggedIn.classList.add('hidden');
+    }
+  }
+}
+
+function closeEmailModal() {
+  document.getElementById('email-modal').style.display = 'none';
+  document.getElementById('email-error').style.display = 'none';
+}
+
+function emailLogin() {
+  const email = document.getElementById('email-input').value.trim();
+  const password = document.getElementById('email-password').value;
+  const errEl = document.getElementById('email-error');
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => closeEmailModal())
+    .catch(err => {
+      errEl.style.display = 'block';
+      errEl.textContent = err.message;
+    });
+}
+
+function emailRegister() {
+  const email = document.getElementById('email-input').value.trim();
+  const password = document.getElementById('email-password').value;
+  const errEl = document.getElementById('email-error');
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => closeEmailModal())
+    .catch(err => {
+      errEl.style.display = 'block';
+      errEl.textContent = err.message;
+    });
+}
+
+/* ========== VIDEO PROGRESS (tied to Firebase UID) ========== */
+function getProgress(postId) {
+  if (!currentUser) return 0;
+  try {
+    const all = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+    return all[currentUser.uid + '::' + postId] || 0;
+  } catch { return 0; }
+}
+
+function saveProgress(postId, time) {
+  if (!currentUser || time < 3) return;
+  try {
+    const all = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+    all[currentUser.uid + '::' + postId] = Math.floor(time);
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(all));
+  } catch {}
+}
+
+/* ========== VISITOR COUNTER (silent) ========== */
+function loadVisitorCount() {
+  fetch('https://api.countapi.xyz/hit/ruzekhodavand-site/visits').catch(() => {});
+}
 
 function applyLanguage() {
   document.body.classList.toggle('lang-en', currentLang === 'en');
@@ -90,7 +212,7 @@ function applyLanguage() {
     bookSelect.value = currentVal;
   }
   updateLiveBadge();
-  updateUserBar();
+  updateAuthUI();
 }
 
 function toggleLanguage() {
@@ -114,79 +236,6 @@ function getYouTubeEmbedUrl(url) {
     if (url.includes('youtube.com/embed/')) return url;
   } catch (e) {}
   return null;
-}
-
-/* ========== USER SIGN-IN & VIDEO PROGRESS ========== */
-function updateUserBar() {
-  const t = T[currentLang];
-  const status = document.getElementById('user-status');
-  const signInBtn = document.getElementById('user-signin-btn');
-  const signOutBtn = document.getElementById('user-signout-btn');
-  const nameInput = document.getElementById('user-name-input');
-
-  if (currentUser) {
-    if (status) status.innerHTML = `${t.welcome}, <strong>${escapeHtml(currentUser)}</strong>`;
-    if (signInBtn) signInBtn.classList.add('hidden');
-    if (signOutBtn) signOutBtn.classList.remove('hidden');
-    if (nameInput) nameInput.classList.add('hidden');
-  } else {
-    if (status) status.textContent = t.guestText;
-    if (signInBtn) signInBtn.classList.remove('hidden');
-    if (signOutBtn) signOutBtn.classList.add('hidden');
-    if (nameInput) nameInput.classList.remove('hidden');
-  }
-}
-
-function signIn() {
-  const input = document.getElementById('user-name-input');
-  const name = (input?.value || '').trim();
-  if (!name) return;
-  currentUser = name;
-  localStorage.setItem(USER_KEY, name);
-  updateUserBar();
-}
-
-function signOut() {
-  currentUser = '';
-  localStorage.removeItem(USER_KEY);
-  updateUserBar();
-}
-
-function getProgress(postId) {
-  if (!currentUser) return 0;
-  try {
-    const all = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
-    return all[currentUser + '::' + postId] || 0;
-  } catch { return 0; }
-}
-
-function saveProgress(postId, time) {
-  if (!currentUser || time < 3) return; // ignore very short watches
-  try {
-    const all = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
-    all[currentUser + '::' + postId] = Math.floor(time);
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(all));
-  } catch {}
-}
-
-/* ========== VISITOR COUNTER ========== */
-function loadVisitorCount() {
-  const el = document.getElementById('visitor-count');
-  if (!el) return;
-
-  // Use a simple free counter service
-  fetch('https://api.countapi.xyz/hit/ruzekhodavand-site/visits')
-    .then(r => r.json())
-    .then(data => {
-      if (data && data.value) el.textContent = data.value.toLocaleString();
-      else el.textContent = '—';
-    })
-    .catch(() => {
-      // Fallback: local counter
-      let count = parseInt(localStorage.getItem('cog_local_visits') || '0', 10) + 1;
-      localStorage.setItem('cog_local_visits', count);
-      el.textContent = count + '+';
-    });
 }
 
 function renderAll() {
@@ -292,38 +341,23 @@ function openPost(id) {
   let mediaHtml = '';
   const savedTime = getProgress(id);
 
-  // External YouTube / video link
   if (post.externalUrl) {
     const ytEmbed = getYouTubeEmbedUrl(post.externalUrl);
     if (ytEmbed) {
-      // YouTube does not allow easy resume via embed start time for all cases, but we can try start=
       const startParam = savedTime > 5 ? `?start=${savedTime}` : '';
       mediaHtml = `
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:1rem 0;background:#000;">
-          <iframe 
-            id="yt-player"
-            src="${ytEmbed}${startParam}" 
-            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen
-            title="${escapeHtml(title)}">
-          </iframe>
+          <iframe src="${ytEmbed}${startParam}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="${escapeHtml(title)}"></iframe>
         </div>
         ${currentUser && savedTime > 5 ? `<p style="font-size:0.85rem;color:#666;margin-bottom:0.5rem">${t.resumeHint}</p>` : ''}`;
     } else {
-      mediaHtml = `
-        <div style="margin:1rem 0">
-          <video id="progress-video" class="modal-media" src="${escapeHtml(post.externalUrl)}" controls style="width:100%;max-height:450px;border-radius:12px;"></video>
-        </div>`;
+      mediaHtml = `<div style="margin:1rem 0"><video id="progress-video" class="modal-media" src="${escapeHtml(post.externalUrl)}" controls style="width:100%;max-height:450px;border-radius:12px;"></video></div>`;
     }
-  }
-  else if (post.type === 'photo' && post.dataUrl) {
+  } else if (post.type === 'photo' && post.dataUrl) {
     mediaHtml = `<img class="modal-media" src="${post.dataUrl}" alt="${escapeHtml(title)}">`;
-  }
-  else if (post.type === 'video' && post.dataUrl) {
+  } else if (post.type === 'video' && post.dataUrl) {
     mediaHtml = `<video id="progress-video" class="modal-media" src="${post.dataUrl}" controls></video>`;
-  }
-  else if (post.dataUrl) {
+  } else if (post.dataUrl) {
     mediaHtml = `<p style="margin:1rem 0"><a class="btn btn-primary" href="${post.dataUrl}" download="${post.filename || 'file'}">${t.download} ${escapeHtml(post.filename || '')}</a></p>`;
   }
 
@@ -339,6 +373,8 @@ function openPost(id) {
       <div>${escapeHtml(c.text)}</div>
     </div>`).join('') || '';
 
+  const defaultName = currentUser ? (currentUser.displayName || currentUser.email || '') : '';
+
   content.innerHTML = `
     <button class="modal-close" onclick="closeModal()">&times;</button>
     <div class="media-book">${book || ''}</div>
@@ -352,7 +388,7 @@ function openPost(id) {
       <h3 style="font-size:1.1rem;margin-bottom:0.8rem">${t.comments}</h3>
       <div id="comments-list">${commentsHtml}</div>
       <form class="comment-form" onsubmit="addComment(event, '${id}')">
-        <input type="text" name="name" placeholder="${t.yourName}" required value="${escapeHtml(currentUser)}">
+        <input type="text" name="name" placeholder="${t.yourName}" required value="${escapeHtml(defaultName)}">
         <textarea name="text" placeholder="${t.writeComment}" required></textarea>
         <button type="submit" class="btn btn-primary">${t.send}</button>
       </form>
@@ -360,13 +396,10 @@ function openPost(id) {
 
   modal.classList.add('open');
 
-  // Resume + save progress for HTML5 video
   setTimeout(() => {
     const video = document.getElementById('progress-video');
     if (video) {
-      if (savedTime > 3) {
-        video.currentTime = savedTime;
-      }
+      if (savedTime > 3) video.currentTime = savedTime;
       video.addEventListener('timeupdate', () => {
         if (video.currentTime > 3) saveProgress(id, video.currentTime);
       });
@@ -376,7 +409,6 @@ function openPost(id) {
 }
 
 function closeModal() {
-  // Save progress before closing
   const video = document.querySelector('#modal-content video');
   if (video && video.id === 'progress-video') {
     const postId = document.querySelector('#modal-content form')?.getAttribute('onsubmit')?.match(/'([^']+)'/)?.[1];
@@ -414,16 +446,12 @@ function setupEventListeners() {
   document.getElementById('filter-type')?.addEventListener('change', renderMedia);
   document.getElementById('filter-search')?.addEventListener('input', renderMedia);
   document.getElementById('post-modal')?.addEventListener('click', (e) => { if (e.target.id === 'post-modal') closeModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-  document.getElementById('user-signin-btn')?.addEventListener('click', signIn);
-  document.getElementById('user-signout-btn')?.addEventListener('click', signOut);
-  document.getElementById('user-name-input')?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') signIn();
-  });
+  document.getElementById('email-modal')?.addEventListener('click', (e) => { if (e.target.id === 'email-modal') closeEmailModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeEmailModal(); } });
 }
 
 window.openPost = openPost;
 window.closeModal = closeModal;
+window.closeEmailModal = closeEmailModal;
 window.addComment = addComment;
 window.toggleLanguage = toggleLanguage;
