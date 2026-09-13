@@ -90,6 +90,22 @@ function toggleLanguage() {
   renderMedia();
 }
 
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+  try {
+    if (url.includes('youtube.com/watch')) {
+      const id = new URL(url).searchParams.get('v');
+      if (id) return `https://www.youtube.com/embed/${id}`;
+    }
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1].split(/[?&]/)[0];
+      if (id) return `https://www.youtube.com/embed/${id}`;
+    }
+    if (url.includes('youtube.com/embed/')) return url;
+  } catch (e) {}
+  return null;
+}
+
 function renderAll() {
   renderMedia();
   renderLive();
@@ -111,13 +127,8 @@ function renderLive() {
     const iframe = document.getElementById('live-iframe');
     if (iframe) {
       let src = liveData.streamUrl;
-      if (src.includes('youtube.com/watch')) {
-        const id = new URL(src).searchParams.get('v');
-        src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-      } else if (src.includes('youtu.be/')) {
-        const id = src.split('youtu.be/')[1].split('?')[0];
-        src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-      }
+      const yt = getYouTubeEmbedUrl(src);
+      if (yt) src = yt + '?autoplay=1';
       iframe.src = src;
     }
   } else {
@@ -156,10 +167,18 @@ function renderMedia() {
     const commentsCount = (p.comments || []).length;
     let preview = desc || '';
     if (!preview && p.writing) preview = p.writing.slice(0, 120) + (p.writing.length > 120 ? '...' : '');
+
     let thumb = '';
-    if (p.type === 'photo' && p.dataUrl) thumb = `<img src="${p.dataUrl}" alt="${escapeHtml(title)}" loading="lazy">`;
-    else if (p.type === 'video' && p.dataUrl) thumb = `<video src="${p.dataUrl}" muted></video>`;
-    else thumb = typeIcon;
+    if (p.type === 'photo' && p.dataUrl) {
+      thumb = `<img src="${p.dataUrl}" alt="${escapeHtml(title)}" loading="lazy">`;
+    } else if (p.type === 'video' && p.dataUrl) {
+      thumb = `<video src="${p.dataUrl}" muted></video>`;
+    } else if (p.externalUrl && getYouTubeEmbedUrl(p.externalUrl)) {
+      thumb = '▶️';
+    } else {
+      thumb = typeIcon;
+    }
+
     return `<article class="media-card" data-id="${p.id}">
       <div class="media-thumb">${thumb}</div>
       <div class="media-body">
@@ -186,21 +205,66 @@ function openPost(id) {
   const dateStr = new Date(post.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   const modal = document.getElementById('post-modal');
   const content = document.getElementById('modal-content');
+
   let mediaHtml = '';
-  if (post.type === 'photo' && post.dataUrl) mediaHtml = `<img class="modal-media" src="${post.dataUrl}" alt="${escapeHtml(title)}">`;
-  else if (post.type === 'video' && post.dataUrl) mediaHtml = `<video class="modal-media" src="${post.dataUrl}" controls></video>`;
-  else if (post.dataUrl) mediaHtml = `<p style="margin:1rem 0"><a class="btn btn-primary" href="${post.dataUrl}" download="${post.filename || 'file'}">${t.download} ${escapeHtml(post.filename || '')}</a></p>`;
+
+  // 1. External YouTube / video link (preferred for large videos)
+  if (post.externalUrl) {
+    const ytEmbed = getYouTubeEmbedUrl(post.externalUrl);
+    if (ytEmbed) {
+      mediaHtml = `
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin:1rem 0;background:#000;">
+          <iframe 
+            src="${ytEmbed}" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            title="${escapeHtml(title)}">
+          </iframe>
+        </div>`;
+    } else {
+      // Direct video link or other URL
+      mediaHtml = `
+        <div style="margin:1rem 0">
+          <video class="modal-media" src="${escapeHtml(post.externalUrl)}" controls style="width:100%;max-height:450px;border-radius:12px;"></video>
+          <p style="margin-top:0.5rem"><a class="btn btn-outline btn-sm" href="${escapeHtml(post.externalUrl)}" target="_blank" rel="noopener">Open original link</a></p>
+        </div>`;
+    }
+  }
+  // 2. Uploaded photo
+  else if (post.type === 'photo' && post.dataUrl) {
+    mediaHtml = `<img class="modal-media" src="${post.dataUrl}" alt="${escapeHtml(title)}">`;
+  }
+  // 3. Uploaded video
+  else if (post.type === 'video' && post.dataUrl) {
+    mediaHtml = `<video class="modal-media" src="${post.dataUrl}" controls></video>`;
+  }
+  // 4. Other uploaded file
+  else if (post.dataUrl) {
+    mediaHtml = `<p style="margin:1rem 0"><a class="btn btn-primary" href="${post.dataUrl}" download="${post.filename || 'file'}">${t.download} ${escapeHtml(post.filename || '')}</a></p>`;
+  }
+
   let writingHtml = '';
-  if (post.writing) writingHtml = `<div style="margin:1.2rem 0;padding:1.2rem;background:#f9f7f2;border-radius:10px;line-height:1.9;white-space:pre-wrap;font-size:1.05rem">${escapeHtml(post.writing)}</div>`;
-  const commentsHtml = (post.comments || []).map(c => `<div class="comment"><div><span class="comment-author">${escapeHtml(c.name)}</span> <span class="comment-date">${new Date(c.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB')}</span></div><div>${escapeHtml(c.text)}</div></div>`).join('') || '';
-  content.innerHTML = `<button class="modal-close" onclick="closeModal()">&times;</button>
+  if (post.writing) {
+    writingHtml = `<div style="margin:1.2rem 0;padding:1.2rem;background:#f9f7f2;border-radius:10px;line-height:1.9;white-space:pre-wrap;font-size:1.05rem">${escapeHtml(post.writing)}</div>`;
+  }
+
+  const commentsHtml = (post.comments || []).map(c => `
+    <div class="comment">
+      <div><span class="comment-author">${escapeHtml(c.name)}</span>
+      <span class="comment-date">${new Date(c.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB')}</span></div>
+      <div>${escapeHtml(c.text)}</div>
+    </div>`).join('') || '';
+
+  content.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
     <div class="media-book">${book || ''}</div>
     <h2 style="margin:0.5rem 0 0.4rem;color:var(--primary)">${escapeHtml(title)}</h2>
     <div style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1rem">${dateStr}</div>
     ${mediaHtml}
     ${desc ? `<p style="margin-bottom:1rem;color:var(--text-muted)">${escapeHtml(desc)}</p>` : ''}
     ${writingHtml}
-    ${post.dataUrl ? `<a class="btn btn-accent" href="${post.dataUrl}" download="${post.filename || 'file'}">${t.download}</a>` : ''}
+    ${post.dataUrl && !post.externalUrl ? `<a class="btn btn-accent" href="${post.dataUrl}" download="${post.filename || 'file'}">${t.download}</a>` : ''}
     <div class="comments-box">
       <h3 style="font-size:1.1rem;margin-bottom:0.8rem">${t.comments}</h3>
       <div id="comments-list">${commentsHtml}</div>
@@ -210,13 +274,17 @@ function openPost(id) {
         <button type="submit" class="btn btn-primary">${t.send}</button>
       </form>
     </div>`;
+
   modal.classList.add('open');
 }
 
 function closeModal() {
   document.getElementById('post-modal').classList.remove('open');
+  // Stop any playing video / iframe
   const vid = document.querySelector('#modal-content video');
   if (vid) vid.pause();
+  const iframe = document.querySelector('#modal-content iframe');
+  if (iframe) iframe.src = iframe.src; // resets the iframe
 }
 
 function addComment(e, postId) {
