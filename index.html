@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
 </head>
 <body>
   <!-- HEADER -->
@@ -30,16 +34,46 @@
     </div>
   </header>
 
-  <!-- USER BAR (optional sign-in for video progress) -->
-  <div id="user-bar" style="background:#f0f4f8;padding:0.5rem 1rem;border-bottom:1px solid #dde3ea;font-size:0.9rem;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;max-width:1200px;margin:0 auto;">
-      <div id="user-status">
+  <!-- USER BAR -->
+  <div id="user-bar" style="background:#f0f4f8;padding:0.6rem 1rem;border-bottom:1px solid #dde3ea;font-size:0.9rem;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.7rem;max-width:1200px;margin:0 auto;">
+      
+      <!-- When logged out -->
+      <div id="auth-logged-out" style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
         <span data-i18n="guestText">مهمان</span>
+        <button id="btn-google" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:0.4rem;">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="16" height="16" alt="">
+          <span data-i18n="signInGoogle">ورود با گوگل</span>
+        </button>
+        <button id="btn-email" class="btn btn-outline btn-sm" data-i18n="signInEmail">ورود با ایمیل</button>
       </div>
-      <div id="user-actions" style="display:flex;gap:0.5rem;align-items:center;">
-        <input type="text" id="user-name-input" data-i18n-placeholder="yourName" placeholder="نام شما" style="padding:0.35rem 0.7rem;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;max-width:140px;">
-        <button id="user-signin-btn" class="btn btn-primary btn-sm" data-i18n="signIn">ورود</button>
-        <button id="user-signout-btn" class="btn btn-outline btn-sm hidden" data-i18n="signOut">خروج</button>
+
+      <!-- When logged in -->
+      <div id="auth-logged-in" class="hidden" style="display:none;align-items:center;gap:0.7rem;flex-wrap:wrap;">
+        <span id="user-display"></span>
+        <button id="btn-signout" class="btn btn-outline btn-sm" data-i18n="signOut">خروج</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL LOGIN MODAL -->
+  <div id="email-modal" class="modal-overlay" style="display:none;">
+    <div class="modal" style="max-width:400px;">
+      <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+      <h2 style="margin-bottom:1rem;color:var(--primary)" data-i18n="emailLoginTitle">ورود با ایمیل</h2>
+      
+      <div id="email-form">
+        <div class="form-group">
+          <label data-i18n="emailLabel">ایمیل</label>
+          <input type="email" id="email-input" placeholder="you@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="passwordLabel">رمز عبور</label>
+          <input type="password" id="email-password" placeholder="••••••••" required>
+        </div>
+        <div id="email-error" style="color:#c62828;font-size:0.9rem;margin-bottom:0.8rem;display:none;"></div>
+        <button id="btn-email-login" class="btn btn-primary" style="width:100%;margin-bottom:0.5rem;" data-i18n="loginBtn">ورود</button>
+        <button id="btn-email-register" class="btn btn-outline" style="width:100%;" data-i18n="registerBtn">ثبت‌نام</button>
       </div>
     </div>
   </div>
