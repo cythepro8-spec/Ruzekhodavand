@@ -39,7 +39,17 @@
     </div>
 
     <div id="admin-panel" class="admin-panel hidden">
-      <h1 style="margin-bottom:1.5rem;color:var(--primary)" data-i18n="panelTitle">پنل مدیریت</h1>
+      <h1 style="margin-bottom:0.8rem;color:var(--primary)" data-i18n="panelTitle">پنل مدیریت</h1>
+
+      <!-- VISITOR STATS (admin only) -->
+      <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.6rem;">
+        <span style="font-size:1.3rem;">👥</span>
+        <div>
+          <div style="font-size:0.85rem;color:#2e7d32;" data-i18n="visitorsLabel">بازدید کل سایت</div>
+          <div style="font-size:1.3rem;font-weight:700;color:#1b5e20;" id="admin-visitor-count">…</div>
+        </div>
+      </div>
+
       <div id="status-msg" class="status-msg hidden"></div>
 
       <div class="admin-tabs">
