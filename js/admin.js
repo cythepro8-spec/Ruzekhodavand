@@ -1,4 +1,4 @@
-/* Church of God - Admin Panel */
+/* Ruzekhodavand - Admin Panel */
 
 const PASSWORD = 'Godiswithus321';
 const STORAGE_KEY = 'cog_posts_v1';
@@ -14,7 +14,7 @@ const BIBLE_BOOKS = {
 
 const T = {
   fa: {
-    siteName: 'کلیسای خدا', back: '← بازگشت', langBtn: 'English', logout: 'خروج',
+    siteName: 'روز خداوند', back: '← بازگشت', langBtn: 'English', logout: 'خروج',
     loginTitle: 'ورود مدیر', passwordPlaceholder: 'رمز عبور', loginBtn: 'ورود', panelTitle: 'پنل مدیریت',
     showPassword: 'نمایش رمز عبور', visitorsLabel: 'بازدید کل سایت',
     tabUpload: 'آپلود / متن', tabLive: 'پخش زنده', tabManage: 'مدیریت پست‌ها', tabBackup: 'پشتیبان',
@@ -46,7 +46,7 @@ const T = {
     deleted: 'حذف شد', imported: 'وارد شد!', invalidFile: 'فایل نامعتبر', defaultLiveTitle: 'پخش زنده', untitled: 'بدون عنوان'
   },
   en: {
-    siteName: 'Church of God', back: '← Back', langBtn: 'Persian', logout: 'Logout',
+    siteName: 'Ruzekhodavand', back: '← Back', langBtn: 'Persian', logout: 'Logout',
     loginTitle: 'Admin Login', passwordPlaceholder: 'Password', loginBtn: 'Login', panelTitle: 'Admin Panel',
     showPassword: 'Show password', visitorsLabel: 'Total site visits',
     tabUpload: 'Upload / Text', tabLive: 'Go Live', tabManage: 'Manage Posts', tabBackup: 'Backup',
@@ -129,7 +129,7 @@ function applyLanguage() {
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
   const t = T[currentLang] || T.en;
-  document.title = currentLang === 'fa' ? 'مدیریت — کلیسای خدا' : 'Admin — Church of God';
+  document.title = currentLang === 'fa' ? 'مدیریت — روز خداوند' : 'Admin — Ruzekhodavand';
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t[key]) el.textContent = t[key];
@@ -386,7 +386,7 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `church-of-god-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.download = `ruzekhodavand-backup-${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
