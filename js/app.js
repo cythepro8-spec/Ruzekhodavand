@@ -1,4 +1,4 @@
-/* Church of God - Main App Logic + Firebase Auth */
+/* Ruzekhodavand - Main App Logic + Firebase Auth */
 
 const STORAGE_KEY = 'cog_posts_v1';
 const LIVE_KEY = 'cog_live_v1';
@@ -26,9 +26,9 @@ const BIBLE_BOOKS = {
 
 const T = {
   fa: {
-    pageTitle: 'کلیسای خدا — پیام سه فرشته', siteName: 'کلیسای خدا', tagline: 'پیام سه فرشته — مکاشفه 14',
+    pageTitle: 'روز خداوند — پیام سه فرشته | Ruzekhodavand', siteName: 'روز خداوند', tagline: 'پیام سه فرشته — مکاشفه 14',
     home: 'خانه', media: 'رسانه‌ها', live: 'پخش زنده', contact: 'تماس', admin: 'مدیریت', langBtn: 'English',
-    heroTitle: 'کلیسای خدا', heroSub: 'پیام جاودانی انجیل برای تمام قوم‌ها، زبان‌ها و ملت‌ها',
+    heroTitle: 'روز خداوند', heroSub: 'پیام جاودانی انجیل برای تمام قوم‌ها، زبان‌ها و ملت‌ها',
     angel1: 'فرشته اول', angel1Text: 'از خدا بترسید و او را جلال دهید، زیرا ساعت داوری او رسیده است',
     angel2: 'فرشته دوم', angel2Text: 'بابل سقوط کرده است! سقوط کرده است!',
     angel3: 'فرشته سوم', angel3Text: 'اگر کسی وحش و تصویرش را بپرستد...',
@@ -37,16 +37,16 @@ const T = {
     writeComment: 'نظر خود را بنویسید...', yourName: 'نام شما', send: 'ارسال',
     liveNow: 'در حال پخش زنده', liveBadge: 'زنده', contactTitle: 'تماس با ما',
     whatsapp: 'واتساپ', phone: 'تلفن', email: 'ایمیل',
-    footer: 'کلیسای خدا — پیام سه فرشته مکاشفه 14', close: 'بستن', untitled: 'بدون عنوان',
+    footer: 'روز خداوند — پیام سه فرشته مکاشفه 14', close: 'بستن', untitled: 'بدون عنوان',
     guestText: 'مهمان', signOut: 'خروج', welcome: 'خوش آمدید',
     signInGoogle: 'ورود با گوگل', signInEmail: 'ورود با ایمیل',
     emailLoginTitle: 'ورود با ایمیل', emailLabel: 'ایمیل', passwordLabel: 'رمز عبور',
     loginBtn: 'ورود', registerBtn: 'ثبت‌نام', resumeHint: 'ویدیو از جایی که قبلاً متوقف کردید ادامه پیدا می‌کند'
   },
   en: {
-    pageTitle: 'Church of God — Three Angels Message', siteName: 'Church of God', tagline: 'Three Angels Message — Revelation 14',
+    pageTitle: 'Ruzekhodavand — Three Angels Message', siteName: 'Ruzekhodavand', tagline: 'Three Angels Message — Revelation 14',
     home: 'Home', media: 'Media', live: 'Live', contact: 'Contact', admin: 'Admin', langBtn: 'Persian',
-    heroTitle: 'Church of God', heroSub: 'The everlasting gospel to every nation, tribe, language and people',
+    heroTitle: 'Ruzekhodavand', heroSub: 'The everlasting gospel to every nation, tribe, language and people',
     angel1: 'First Angel', angel1Text: 'Fear God and give Him glory, for the hour of His judgment has come',
     angel2: 'Second Angel', angel2Text: 'Babylon is fallen, is fallen!',
     angel3: 'Third Angel', angel3Text: 'If anyone worships the beast and his image...',
@@ -55,7 +55,7 @@ const T = {
     writeComment: 'Write your comment...', yourName: 'Your name', send: 'Send',
     liveNow: 'LIVE NOW', liveBadge: 'LIVE', contactTitle: 'Contact Us',
     whatsapp: 'WhatsApp', phone: 'Phone', email: 'Email',
-    footer: 'Church of God — Three Angels Message of Revelation 14', close: 'Close', untitled: 'Untitled',
+    footer: 'Ruzekhodavand — Three Angels Message of Revelation 14', close: 'Close', untitled: 'Untitled',
     guestText: 'Guest', signOut: 'Sign out', welcome: 'Welcome',
     signInGoogle: 'Sign in with Google', signInEmail: 'Sign in with Email',
     emailLoginTitle: 'Sign in with Email', emailLabel: 'Email', passwordLabel: 'Password',
