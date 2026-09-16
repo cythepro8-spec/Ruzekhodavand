@@ -5,7 +5,7 @@ const STORAGE_KEY = 'cog_posts_v1';
 const LIVE_KEY = 'cog_live_v1';
 const AUTH_KEY = 'cog_auth';
 const LANG_KEY = 'cog_lang';
-const MAX_FILE_SIZE = 12 * 1024 * 1024; // 12 MB
+const MAX_FILE_SIZE = 12 * 1024 * 1024;
 
 const BIBLE_BOOKS = {
   fa: ['پیدایش','خروج','لاویان','اعداد','تثنیه','یوشع','داوران','روت','اول سموئیل','دوم سموئیل','اول پادشاهان','دوم پادشاهان','اول تواریخ','دوم تواریخ','عزرا','نحمیا','استر','ایوب','مزامیر','امثال','جامعه','غزل غزل‌ها','اشعیا','ارمیا','مراثی','حزقیال','دانیال','هوشع','یوئیل','عاموس','عوبیدیا','یونس','میکا','ناحوم','حبقوق','صفنیا','حجی','زکریا','ملاکی','متی','مرقس','لوقا','یوحنا','اعمال رسولان','رومیان','اول قرنتیان','دوم قرنتیان','غلاطیان','افسسیان','فیلیپیان','کولسیان','اول تسالونیکیان','دوم تسالونیکیان','اول تیموتائوس','دوم تیموتائوس','تیطس','فلیمون','عبرانیان','یعقوب','اول پطرس','دوم پطرس','اول یوحنا','دوم یوحنا','سوم یوحنا','یهودا','مکاشفه','سه فرشته','عمومی'],
@@ -23,7 +23,7 @@ const T = {
     descFa: 'توضیحات فارسی (اختیاری)', descEn: 'توضیحات انگلیسی (اختیاری)',
     descFaPh: 'توضیحات کوتاه...', descEnPh: 'Short description...',
     writingLabel: 'متن یا نوشته (می‌توانید اینجا پیست کنید)', writingPh: 'متن کامل، موعظه، مطالعه کتاب مقدس یا هر نوشته‌ای را اینجا وارد یا پیست کنید...',
-    bibleBook: 'کتاب مقدس', typeLabel: 'نوع', typeText: 'متن / نوشته', typePhoto: 'عکس', typeVideo: 'ویدیو', typeFile: 'فایل',
+    bibleBook: 'کتاب مقدس', typeLabel: 'نوع', typeText: 'متن / نوشته', typePhoto: 'عکس', typeVideo: 'ویدیو', typeAudio: 'صوت / صوت', typeFile: 'فایل',
     fileLabel: 'فایل مستقیم (حداکثر ۱۲ مگابایت)', dropFile: 'فایل را اینجا رها کنید یا کلیک کنید',
     fileNote: 'حداکثر ۱۲ مگابایت. برای ویدیوهای بزرگ‌تر حتماً از لینک خارجی استفاده کنید.',
     externalLabel: 'لینک ویدیو یا فایل بزرگ (توصیه برای ویدیوهای بالای ۵۰ مگابایت تا ۵ گیگابایت+)',
@@ -55,7 +55,7 @@ const T = {
     descFa: 'Persian Description (optional)', descEn: 'English Description (optional)',
     descFaPh: 'Short description...', descEnPh: 'Short description...',
     writingLabel: 'Text or Writing (you can paste here)', writingPh: 'Paste or type full text, sermon, Bible study or any writing here...',
-    bibleBook: 'Bible Book', typeLabel: 'Type', typeText: 'Text / Writing', typePhoto: 'Photo', typeVideo: 'Video', typeFile: 'File',
+    bibleBook: 'Bible Book', typeLabel: 'Type', typeText: 'Text / Writing', typePhoto: 'Photo', typeVideo: 'Video', typeAudio: 'Audio / Voice', typeFile: 'File',
     fileLabel: 'Direct file upload (max 12 MB)', dropFile: 'Drop file here or click',
     fileNote: 'Maximum 12 MB. For larger videos always use the external link above.',
     externalLabel: 'External Video / Large File Link (recommended for videos over 50 MB up to 5 GB+)',
@@ -119,9 +119,7 @@ function loadVisitorCount() {
       if (data && data.value != null) el.textContent = data.value.toLocaleString();
       else el.textContent = '—';
     })
-    .catch(() => {
-      el.textContent = '—';
-    });
+    .catch(() => { el.textContent = '—'; });
 }
 
 function applyLanguage() {
@@ -141,7 +139,7 @@ function applyLanguage() {
   const typeSelect = document.getElementById('post-type');
   if (typeSelect) {
     const val = typeSelect.value;
-    typeSelect.innerHTML = `<option value="text">${t.typeText}</option><option value="photo">${t.typePhoto}</option><option value="video">${t.typeVideo}</option><option value="file">${t.typeFile}</option>`;
+    typeSelect.innerHTML = `<option value="text">${t.typeText}</option><option value="photo">${t.typePhoto}</option><option value="video">${t.typeVideo}</option><option value="audio">${t.typeAudio}</option><option value="file">${t.typeFile}</option>`;
     typeSelect.value = val || 'text';
   }
   populateBookSelects();
@@ -261,7 +259,7 @@ function handlePostSubmit(e) {
   const finishSave = (dataUrl, filename) => {
     let finalType = type;
     if (file) finalType = (type === 'text' ? guessType(file) : type);
-    else if (externalUrl) finalType = 'video';
+    else if (externalUrl && type === 'text') finalType = 'video';
 
     const post = {
       id: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
@@ -308,6 +306,7 @@ function handlePostSubmit(e) {
 function guessType(file) {
   if (file.type.startsWith('image/')) return 'photo';
   if (file.type.startsWith('video/')) return 'video';
+  if (file.type.startsWith('audio/') || /\.(mp3|wav|m4a|ogg|aac)$/i.test(file.name)) return 'audio';
   return 'file';
 }
 
@@ -361,7 +360,7 @@ function renderPostsList() {
     const title = currentLang === 'fa' ? (p.title_fa || p.title_en || t.untitled) : (p.title_en || p.title_fa || t.untitled);
     const book = currentLang === 'fa' ? p.book_fa : p.book_en;
     const dateStr = new Date(p.date).toLocaleString(currentLang === 'fa' ? 'fa-IR' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-    const typeLabel = p.type === 'text' ? t.typeText : p.type === 'photo' ? t.typePhoto : p.type === 'video' ? t.typeVideo : t.typeFile;
+    const typeLabel = p.type === 'text' ? t.typeText : p.type === 'photo' ? t.typePhoto : p.type === 'video' ? t.typeVideo : p.type === 'audio' ? t.typeAudio : t.typeFile;
     const extra = p.externalUrl ? ' 🔗' : '';
     return `<div style="display:flex;justify-content:space-between;align-items:center;padding:0.8rem;border-bottom:1px solid #eee;gap:1rem;flex-wrap:wrap">
       <div style="flex:1;min-width:200px"><strong>${escapeHtml(title)}${extra}</strong>
