@@ -41,7 +41,6 @@
     <div id="admin-panel" class="admin-panel hidden">
       <h1 style="margin-bottom:0.8rem;color:var(--primary)" data-i18n="panelTitle">پنل مدیریت</h1>
 
-      <!-- VISITOR STATS (admin only) -->
       <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:0.8rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.6rem;">
         <span style="font-size:1.3rem;">👥</span>
         <div>
@@ -99,6 +98,7 @@
                 <option value="text" data-i18n="typeText">متن / نوشته</option>
                 <option value="photo" data-i18n="typePhoto">عکس</option>
                 <option value="video" data-i18n="typeVideo">ویدیو</option>
+                <option value="audio" data-i18n="typeAudio">صوت / صوت</option>
                 <option value="file" data-i18n="typeFile">فایل</option>
               </select>
             </div>
@@ -126,7 +126,7 @@
           <div class="form-group" id="file-group">
             <label data-i18n="fileLabel">فایل مستقیم (حداکثر ۱۲ مگابایت)</label>
             <div class="upload-zone" id="upload-zone">
-              <input type="file" id="file-input" accept="image/*,video/*,.pdf,.doc,.docx,.mp3,.mp4,.mov,.avi,.zip,.txt">
+              <input type="file" id="file-input" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.mp3,.wav,.m4a,.ogg,.aac,.mp4,.mov,.avi,.zip,.txt">
               <p id="file-label" data-i18n="dropFile">فایل را اینجا رها کنید یا کلیک کنید</p>
               <p style="font-size:0.8rem;color:#888;margin-top:0.5rem" data-i18n="fileNote">حداکثر ۱۲ مگابایت. برای ویدیوهای بزرگ‌تر حتماً از لینک خارجی استفاده کنید.</p>
             </div>
