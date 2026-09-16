@@ -8,31 +8,23 @@
   <meta name="keywords" content="Ruzekhodavand, روز خداوند, Three Angels Message, پیام سه فرشته, Church of God, Revelation 14, everlasting gospel">
   <meta name="author" content="Ruzekhodavand">
   <meta name="robots" content="index, follow">
-
-  <!-- Open Graph (for Google + social sharing) -->
   <meta property="og:title" content="Ruzekhodavand — روز خداوند">
   <meta property="og:description" content="پیام سه فرشته مکاشفه 14 — The everlasting gospel to every nation">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ruzekhodavand.vercel.app/">
   <meta property="og:site_name" content="Ruzekhodavand">
-
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Ruzekhodavand — روز خداوند">
   <meta name="twitter:description" content="پیام سه فرشته مکاشفه 14">
-
   <link rel="canonical" href="https://ruzekhodavand.vercel.app/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
       <a href="index.html" class="logo">
@@ -43,6 +35,7 @@
         <a href="#home" data-i18n="home">خانه</a>
         <a href="#media" data-i18n="media">رسانه‌ها</a>
         <a href="#live" data-i18n="live">پخش زنده</a>
+        <a href="#questions" data-i18n="questionsNav">سوالات</a>
         <a href="#contact" data-i18n="contact">تماس</a>
         <a href="admin.html" data-i18n="admin">مدیریت</a>
         <button id="lang-toggle" class="lang-toggle" data-i18n="langBtn">English</button>
@@ -51,11 +44,8 @@
     </div>
   </header>
 
-  <!-- USER BAR -->
   <div id="user-bar" style="background:#f0f4f8;padding:0.6rem 1rem;border-bottom:1px solid #dde3ea;font-size:0.9rem;">
     <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.7rem;max-width:1200px;margin:0 auto;">
-      
-      <!-- When logged out -->
       <div id="auth-logged-out" style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
         <span data-i18n="guestText">مهمان</span>
         <button id="btn-google" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:0.4rem;">
@@ -64,8 +54,6 @@
         </button>
         <button id="btn-email" class="btn btn-outline btn-sm" data-i18n="signInEmail">ورود با ایمیل</button>
       </div>
-
-      <!-- When logged in -->
       <div id="auth-logged-in" class="hidden" style="display:none;align-items:center;gap:0.7rem;flex-wrap:wrap;">
         <span id="user-display"></span>
         <button id="btn-signout" class="btn btn-outline btn-sm" data-i18n="signOut">خروج</button>
@@ -73,12 +61,10 @@
     </div>
   </div>
 
-  <!-- EMAIL LOGIN MODAL -->
   <div id="email-modal" class="modal-overlay">
     <div class="modal" style="max-width:400px;">
       <button class="modal-close" onclick="closeEmailModal()">&times;</button>
       <h2 style="margin-bottom:1rem;color:var(--primary)" data-i18n="emailLoginTitle">ورود با ایمیل</h2>
-      
       <div id="email-form">
         <div class="form-group">
           <label data-i18n="emailLabel">ایمیل</label>
@@ -95,13 +81,11 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <section class="hero" id="home">
     <div class="hero-content">
       <h1 data-i18n="heroTitle">روز خداوند</h1>
       <p data-i18n="heroSub">پیام جاودانی انجیل برای تمام قوم‌ها، زبان‌ها و ملت‌ها</p>
       <p style="font-size:0.95rem;opacity:0.8;margin-top:-0.5rem" data-i18n="tagline">پیام سه فرشته — مکاشفه 14</p>
-
       <div class="angels-row">
         <div class="angel-card">
           <div class="angel-num">1</div>
@@ -122,10 +106,7 @@
     </div>
   </section>
 
-  <!-- MAIN CONTENT -->
   <main class="container">
-
-    <!-- LIVE SECTION -->
     <section id="live-section" class="live-section hidden">
       <div class="live-indicator">
         <span class="live-dot"></span>
@@ -135,14 +116,10 @@
       <iframe id="live-iframe" class="live-iframe" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
     </section>
 
-    <!-- MEDIA -->
     <section id="media">
       <h2 class="section-title" data-i18n="media">رسانه‌ها</h2>
-
       <div class="filters">
-        <select id="filter-book">
-          <option value="" data-i18n="all">همه</option>
-        </select>
+        <select id="filter-book"><option value="" data-i18n="all">همه</option></select>
         <select id="filter-type">
           <option value="" data-i18n="all">همه</option>
           <option value="text" data-i18n="text">متن</option>
@@ -153,13 +130,35 @@
         </select>
         <input type="search" id="filter-search" data-i18n-placeholder="search" placeholder="جستجو...">
       </div>
+      <div id="media-grid" class="media-grid"></div>
+    </section>
 
-      <div id="media-grid" class="media-grid">
-        <!-- Filled by JS -->
+    <section id="questions" style="margin-top:3rem">
+      <h2 class="section-title" data-i18n="questionsTitle">پرسش و پاسخ</h2>
+      <div class="contact-card" style="max-width:560px;text-align:start;">
+        <p style="margin-bottom:1rem;color:var(--text-muted);font-size:0.95rem;" data-i18n="questionsIntro">سوال خود را بنویسید. پاسخ از طریق ایمیل برای شما ارسال می‌شود.</p>
+        <form id="question-form" action="https://formsubmit.co/jesusmehr@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="New question from Ruzekhodavand website">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://ruzekhodavand.vercel.app/#questions">
+          <div class="form-group">
+            <label data-i18n="qName">نام شما</label>
+            <input type="text" name="name" required placeholder="Name">
+          </div>
+          <div class="form-group">
+            <label data-i18n="qEmail">ایمیل شما (برای پاسخ)</label>
+            <input type="email" name="email" required placeholder="you@email.com">
+          </div>
+          <div class="form-group">
+            <label data-i18n="qQuestion">سوال شما</label>
+            <textarea name="message" required rows="4" placeholder="Your question..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="qSend">ارسال سوال</button>
+        </form>
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact" style="margin-top:3rem">
       <h2 class="section-title" data-i18n="contactTitle">تماس با ما</h2>
       <div class="contact-card">
@@ -188,17 +187,13 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <p data-i18n="footer">روز خداوند — پیام سه فرشته مکاشفه 14</p>
     <p style="margin-top:0.4rem;font-size:0.8rem;opacity:0.7">Ruzekhodavand · Revelation 14:6-12</p>
   </footer>
 
-  <!-- POST MODAL -->
   <div id="post-modal" class="modal-overlay">
-    <div class="modal">
-      <div id="modal-content"></div>
-    </div>
+    <div class="modal"><div id="modal-content"></div></div>
   </div>
 
   <script src="js/app.js"></script>
