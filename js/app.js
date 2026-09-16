@@ -35,6 +35,8 @@ const T = {
     download: 'دانلود', view: 'مشاهده', comments: 'نظرات', noPosts: 'هنوز محتوایی منتشر نشده است.',
     writeComment: 'نظر خود را بنویسید...', yourName: 'نام شما', send: 'ارسال',
     liveNow: 'در حال پخش زنده', liveBadge: 'زنده', contactTitle: 'تماس با ما',
+    questionsTitle: 'پرسش و پاسخ', questionsIntro: 'سوال خود را بنویسید. پاسخ از طریق ایمیل برای شما ارسال می‌شود.', questionsNav: 'سوالات',
+    qName: 'نام شما', qEmail: 'ایمیل شما (برای پاسخ)', qQuestion: 'سوال شما', qSend: 'ارسال سوال', qThanks: 'سوال شما ارسال شد. متشکریم!',
     whatsapp: 'واتساپ', phone: 'تلفن', email: 'ایمیل',
     footer: 'روز خداوند — پیام سه فرشته مکاشفه 14', close: 'بستن', untitled: 'بدون عنوان',
     guestText: 'مهمان', signOut: 'خروج', welcome: 'خوش آمدید',
@@ -53,6 +55,8 @@ const T = {
     download: 'Download', view: 'View', comments: 'Comments', noPosts: 'No content has been published yet.',
     writeComment: 'Write your comment...', yourName: 'Your name', send: 'Send',
     liveNow: 'LIVE NOW', liveBadge: 'LIVE', contactTitle: 'Contact Us',
+    questionsTitle: 'Ask a Question', questionsIntro: 'Write your question. We will reply by email.', questionsNav: 'Questions',
+    qName: 'Your name', qEmail: 'Your email (for reply)', qQuestion: 'Your question', qSend: 'Send question', qThanks: 'Your question was sent. Thank you!',
     whatsapp: 'WhatsApp', phone: 'Phone', email: 'Email',
     footer: 'Ruzekhodavand — Three Angels Message of Revelation 14', close: 'Close', untitled: 'Untitled',
     guestText: 'Guest', signOut: 'Sign out', welcome: 'Welcome',
@@ -199,6 +203,13 @@ function saveProgress(postId, time) {
 }
 
 function loadVisitorCount() {
+  // Do not count admin visits
+  if (sessionStorage.getItem('cog_auth') === 'true') return;
+  // Count each browser once per day
+  const today = new Date().toISOString().slice(0, 10);
+  const key = 'cog_visited_' + today;
+  if (localStorage.getItem(key)) return;
+  localStorage.setItem(key, '1');
   fetch('https://api.countapi.xyz/hit/ruzekhodavand-site/visits').catch(() => {});
 }
 
